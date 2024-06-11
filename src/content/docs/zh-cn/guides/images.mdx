@@ -6,6 +6,7 @@ i18nReady: true
 import Since from '~/components/Since.astro';
 import Badge from '~/components/Badge.astro';
 import RecipeLinks from "~/components/RecipeLinks.astro";
+import { Steps } from '@astrojs/starlight/components'
 
 Astro 为你提供了多种在网站上使用图像的方法，无论它们是本地存储在你的项目内，还是链接到外部 URL，或者在 CMS 或 CDN 中管理的！
 
@@ -33,18 +34,18 @@ Astro 可以使用 API 远程获取数据，也可以显示来自其完整 URL �
 
 使用 `astro:assets` 导入并使用 Astro 内置的 `<Image />` 组件来优化图像。或者，Astro 语法支持直接编写 HTML `<img>` 标签，这将跳过图像处理。
 
-```astro title="src/pages/blog/MyImages.astro"
+```astro title="src/pages/blog/my-images.astro"
 ---
 import { Image } from 'astro:assets';
 import localBirdImage from '../../images/subfolder/localBirdImage.png';
 ---
-<Image src={localBirdImage} alt="一只鸟坐在蛋窝上。"/>
-<Image src="/images/bird-in-public-folder.jpg" alt="A bird." width="50" height="50"/>
-<Image src="https://example.com/remote-bird.jpg" alt="A bird." width="50" height="50"/>
+<Image src={localBirdImage} alt="一只鸟坐在蛋窝上。" />
+<Image src="/images/bird-in-public-folder.jpg" alt="一只鸟" width="50" height="50" />
+<Image src="https://example.com/remote-bird.jpg" alt="一只鸟" width="50" height="50" />
 
 <img src={localBirdImage.src} alt="一只鸟坐在蛋窝上。">
-<img src="/images/bird-in-public-folder.jpg" alt="A bird.">
-<img src="https://example.com/remote-bird.jpg" alt="A bird.">
+<img src="/images/bird-in-public-folder.jpg" alt="一只鸟">
+<img src="https://example.com/remote-bird.jpg" alt="一只鸟">
 ```
 
 要从 `src/` 文件夹中动态导入图像，请参阅下面的操作指南：
@@ -67,7 +68,7 @@ import localBirdImage from '../../images/subfolder/localBirdImage.png';
 ---
 // 导入 Image 组件和图像
 import { Image } from 'astro:assets';
-import myImage from "../assets/my_image.png"; // Image is 1600x900
+import myImage from '../assets/my_image.png'; // Image is 1600x900
 ---
 
 <!-- 在 Image 组件上 `alt` 是必须的  -->
@@ -98,7 +99,7 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
   ```astro title="src/pages/index.astro" "myImportedImage" "{myImportedImage}"
   ---
   import { Image } from 'astro:assets';
-  import myImportedImage from `../assets/my-local-image.png`
+  import myImportedImage from '../assets/my-local-image.png';
   ---
   <Image src={myImportedImage} alt="descriptive text" />
   ```
@@ -127,7 +128,8 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
     src="https://example.com/remote-image.jpg"
     alt="descriptive text"
     width="200"
-    height="150" />
+    height="150"
+  />
   ```
 
 ##### alt (必须)
@@ -136,17 +138,17 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
 
 如果图像仅仅是装饰性的（即不会对页面的理解有所贡献），请设置 `alt=""` 以便屏幕阅读器和其他辅助技术知道忽略该图像。
 
-##### width 和 height (对于 `public/` 和远程图像是必须的)
+##### width 和 height（对于 `public/` 中的图像是必须的）
 
 这些属性定义了要用于图像的尺寸。
 
-当以原始宽高比使用本地图像时，`width` 和 `height` 可以从源文件中自动推断，并且它们是可选的。
+当使用保持原始宽高比的图像时，`width` 和 `height` 是可选的。这些尺寸可以自动从位于 `src/` 中的图像文件和设置了 [`inferSize` 设置为 `true`](#infersize) 的远程图像中推断出来。
 
-但是，对于远程图像和存储在 `public/` 文件夹中的图像，这两个属性是必需的，因为 Astro 无法分析这些文件。
+但是，对于存储在你的 `public/` 文件夹中的图像，这两个属性都是必需的，因为 Astro 无法分析这些文件。
 
 ##### densities
 
-<p><Since v="3.3.0" /> <Badge>实验性</Badge></p>
+<p><Since v="3.3.0" /></p>
 
 为图像生成的像素密度列表。
 
@@ -157,12 +159,18 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
 ```astro title="src/components/MyComponent.astro"
 ---
 import { Image } from 'astro:assets';
-import myImage from "../assets/my_image.png";
+import myImage from '../assets/my_image.png';
 ---
-<Image src={myImage} width={myImage.width / 2} densities={[1.5, 2]} alt="我的图片描述" />
+<Image 
+  src={myImage}
+  width={myImage.width / 2}
+  densities={[1.5, 2]}
+  alt="我的图片描述"
+/>
 ```
 
 ```html
+<!-- 输出 -->
 <img
   src="/_astro/my_image.hash.webp"
   srcset="
@@ -180,7 +188,7 @@ import myImage from "../assets/my_image.png";
 
 ##### widths
 
-<p><Since v="3.3.0" /> <Badge>实验性</Badge></p>
+<p><Since v="3.3.0" /></p>
 
 为图像生成的宽度列表。
 
@@ -193,7 +201,7 @@ import myImage from "../assets/my_image.png";
 ```astro title="src/components/MyComponent.astro"
 ---
 import { Image } from 'astro:assets';
-import myImage from "../assets/my_image.png"; // Image is 1600x900
+import myImage from '../assets/my_image.png'; // Image is 1600x900
 ---
 <Image
   src={myImage}
@@ -204,6 +212,7 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
 ```
 
 ```html
+<!-- 输出 -->
 <img
   src="/_astro/my_image.hash.webp"
   srcset="
@@ -238,6 +247,25 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
 - 一个预设值（`low`、`mid`、`high`、`max`），可以在不同格式之间自动标准化。
 - 一个从 `0` 到 `100` 的数字（在格式之间有不同的解释）。
 
+##### inferSize
+
+<p><Since v="4.4.0" /></p>
+
+允许你自动设置远程图像的原始 `width` 和 `height`。
+
+默认情况下，这个值被设置为 `false`，你必须手动指定远程图片的宽度和高度。
+
+在 `<Image />` 组件中添加 `inferSize`（或者在 `getImage()` 中添加 `inferSize: true`），以便在获取时从图片内容中推断这些值。如果你不知道远程图片的尺寸，或者这些尺寸可能会变化，这个属性对你会很有帮助：
+
+```astro mark="inferSize"
+---
+import { Image } from 'astro:assets';
+---
+<Image src="https://example.com/cat.png" inferSize alt="一只猫在阳光下睡觉。" />
+```
+
+`inferSize` 能够获取来自未经授权域的[远程图片的尺寸](#授权远程图像)，但图片本身将保持未处理状态。
+
 ##### 附加属性
 
 除了上面的属性之外，`<Image />` 组件还接受 HTML `<img>` 标签接受的所有属性。
@@ -247,7 +275,7 @@ import myImage from "../assets/my_image.png"; // Image is 1600x900
 ```astro title="src/pages/index.astro"
 ---
 import { Image } from 'astro:assets';
-import myImage from "../assets/my_image.png";
+import myImage from '../assets/my_image.png';
 ---
 
 <!-- 在 Image 组件上 `alt` 是必须的 -->
@@ -277,7 +305,7 @@ import myImage from "../assets/my_image.png";
 ---
 import { Image } from 'astro:assets';
 
-const {src, ...attrs} = Astro.props;
+const { src, ...attrs } = Astro.props;
 ---
 <Image src={src} {...attrs} />
 
@@ -298,7 +326,7 @@ const {src, ...attrs} = Astro.props;
 ```astro title="src/pages/index.astro"
 ---
 import { Picture } from 'astro:assets';
-import myImage from "../assets/my_image.png"; // 图像分辨率为 1600x900
+import myImage from '../assets/my_image.png'; // 图像分辨率为 1600x900
 ---
 <!-- `alt` 属性在 `Picture` 组件中是必需的 -->
 <Picture src={myImage} formats={['avif', 'webp']} alt="我的图片描述" />
@@ -332,7 +360,7 @@ import myImage from "../assets/my_image.png"; // 图像分辨率为 1600x900
 
 用作 `<img>` 标签的回退格式值。
 
-静态图像默认为 `.png`，动画图像默认为 `.gif`，SVG 文件默认为 `.svg`。
+静态图像默认使用 `.png` 格式（如果图像是 JPG 格式，则默认为 `.jpg`），动画图像默认为 `.gif` 格式，SVG 文件默认为 `.svg` 格式。
 
 ##### `pictureAttributes`
 
@@ -345,10 +373,14 @@ import myImage from "../assets/my_image.png"; // 图像分辨率为 1600x900
 import { Picture } from "astro:assets";
 import myImage from "../my_image.png"; // 图像分辨率为 1600x900
 ---
-<Picture src={myImage} alt="我的图片描述" pictureAttributes={{style: "background-color: red;"}} />
+<Picture 
+  src={myImage}
+  alt="我的图片描述"
+  pictureAttributes={{style: "background-color: red;"}} />
 ```
 
 ```html
+<!-- 输出 -->
 <picture style="background-color: red;">
   <source srcset="/_astro/my_image.hash.webp" type="image/webp" />
   <img
@@ -364,7 +396,7 @@ import myImage from "../my_image.png"; // 图像分辨率为 1600x900
 
 ### `<img>`
 
-[Astro 模板语法](/zh-cn/core-concepts/astro-syntax/) 也支持直接编写 `<img>` 标签，完全控制其最终输出。这些图像不会被处理和优化。
+[Astro 模板语法](/zh-cn/basics/astro-syntax/) 也支持直接编写 `<img>` 标签，完全控制其最终输出。这些图像不会被处理和优化。
 
 它接受所有 HTML `<img>` 标签属性，唯一必需的属性是 `src`。
 
@@ -377,7 +409,7 @@ import myImage from "../my_image.png"; // 图像分辨率为 1600x900
 ```astro title="src/pages/posts/post-1.astro" "myDog.width" "myDog.height"
 ---
 // 导入本地图像
-import myDog from `../../images/pets/local-dog.jpg`
+import myDog from '../../images/pets/local-dog.jpg';
 ---
 // 访问图像的属性
 <img src={myDog.src} width={myDog.width} height={myDog.height} alt="一只狂吠的狗。" />
@@ -398,7 +430,7 @@ interface ImageMetadata {
 对于位于 `public/` 中的图像，请使用图像相对于 public 文件夹的**文件路径**作为 `src` 值：
 
 ```astro '"/images/public-cat.jpg"'
-<img src="/images/public-cat.jpg" alt="一只睡觉的猫。">
+<img src="/images/public-cat.jpg" alt="一只睡觉的猫。" >
 ```
 
 #### 远程图像
@@ -454,7 +486,7 @@ export default defineConfig({
 
 ## Markdown 文件中的图像
 
-在 `.md` 文件中使用标准的 Markdown `![alt](src)` 语法。这个语法可以与 Astro 的 [图像服务 API](/zh-cn/reference/image-service-reference/) 一起使用，来优化你的本地图像和授权的远程图像。
+在 `.md` 文件中使用标准的 Markdown `![alt](src)` 语法。这个语法可以与 Astro 的 [图像服务 API](/zh-cn/reference/image-service-reference/) 一起使用，来优化你在 `src/` 目录下的本地图像。远程图像和 `public/` 目录下的本地图像不会被优化。
 
 ```md
 <!-- src/pages/post-1.md -->
@@ -463,13 +495,13 @@ export default defineConfig({
 
 <!-- 存储在 src/assets/ 中的本地图像 -->
 <!-- 使用相对路径或者导入别名 -->
-![A starry night sky.](../assets/stars.png)
+![繁星点点的夜空](../assets/stars.png)
 
 <!-- 存储在 public/images/ 中的图像 -->
 <!-- 使用相对 public/ 的文件路径-->
-![A starry night sky.](/images/stars.png)
+![繁星点点的夜空](/images/stars.png)
 
-<!-- 其它服务上的远程图像 -->
+<!-- 其他服务上的远程图像 -->
 <!-- 使用图像的完成 url -->
 ![Astro](https://example.com/images/remote-image.png)
 ```
@@ -493,17 +525,20 @@ import rocket from '../assets/rocket.png';
 
 # 我的 MDX 页面
 
+// 存储在同一文件夹中的本地图像
+![太空中的火箭飞船](houston.png)
+
 // 存储在 src/assets/ 中的本地图像
-<Image src={rocket} alt="A rocketship in space."/>
-<img src={rocket.src} alt="A rocketship in space." />
-![A rocketship in space](../assets/rocket.png)
+<Image src={rocket} alt="太空中的火箭飞船" />
+<img src={rocket.src} alt="太空中的火箭飞船" />
+![太空中的火箭飞船](../assets/rocket.png)
 
 // 存储在 public/images/ 中的图像
-<Image src="/images/stars.png" alt="A starry night sky." />
-<img src="/images/stars.png" alt="A starry night sky." />
-![A starry night sky.](/images/stars.png)
+<Image src="/images/stars.png" alt="繁星点点的夜空" />
+<img src="/images/stars.png" alt="繁星点点的夜空" />
+![繁星点点的夜空](/images/stars.png)
 
-// 其它服务上的远程图像
+// 其他服务上的远程图像
 <Image src="https://example.com/images/remote-image.png" />
 <img src="https://example.com/images/remote-image.png" />
 ![Astro](https://example.com/images/remote-image.png)
@@ -512,7 +547,9 @@ import rocket from '../assets/rocket.png';
 
 ## 内容集合中的图像
 
-你可以在 frontmatter 中声明一个与内容集合条目相关联的图像，例如博客文章的封面图像，使用相对于当前文件夹的路径：
+内容集合中的图像将会按照你所使用的文件类型，以与 [Markdown](#markdown-文件中的图像) 和 [MDX](#mdx-文件中的图像) 中相同的方式处理。
+
+此外，你还可以在 frontmatter 中为内容集合条目声明一个关联图像，例如博客文章的封面图像，使用其相对于当前文件夹的路径：
 
 ```md title="src/content/blog/my-post.md" {3}
 ---
@@ -574,7 +611,7 @@ const allBlogPosts = await getCollection("blog");
 本地图像必须**先被导入**，才能访问它们的 [图像属性](#src-中的本地图像)，例如 `src`。
 
 ```jsx title="src/components/ReactImage.jsx"
-import stars from "../assets/stars.png"
+import stars from "../assets/stars.png";
 
 export default function ReactImage () {
   return (
@@ -585,7 +622,7 @@ export default function ReactImage () {
 
 ```svelte title="src/components/SvelteImage.svelte"
 <script>
-  import stars from '../assets/stars.png'
+  import stars from '../assets/stars.png';
 </script>
 
 <img src={stars.src} alt="繁星点点的夜空。" />
@@ -596,14 +633,14 @@ export default function ReactImage () {
 
 `<Image />` 组件，就像任何其他 Astro 组件一样，**对 UI 框架组件不可用**。
 
-但是，你可以将 `<Image />` 生成的静态内容作为子组件传递给 `.astro` 文件中的框架组件，或者使用 [命名的 `<slot/>`](/zh-cn/core-concepts/framework-components/#我可以在我的框架组件中使用-astro-组件吗)。
+但是，你可以将 `<Image />` 生成的静态内容作为子组件传递给 `.astro` 文件中的框架组件，或者使用 [命名的 `<slot/>`](/zh-cn/guides/framework-components/#我可以在我的框架组件中使用-astro-组件吗)。
 
 
-```astro title="ImageWrapper.astro"
+```astro title="src/components/ImageWrapper.astro"
 ---
 import ReactComponent from './ReactComponent.jsx';
-import { Image } from "astro:assets"
-import stars from "~/stars/docline.png";
+import { Image } from 'astro:assets';
+import stars from '~/stars/docline.png';
 ---
 
 <ReactComponent>
@@ -617,7 +654,7 @@ import stars from "~/stars/docline.png";
 `getImage()` 依赖于仅在服务端可用的 API，当在客户端使用时会导致构建失败。
 :::
 
-`getImage()` 函数用于生成图像，这些图像将被用于除了直接在 HTML 中使用之外的其他地方，例如在 [API 路由](/zh-cn/core-concepts/endpoints/#服务器端点api-路由) 中。它还允许你创建自己的自定义 `<Image />` 组件。
+`getImage()` 函数用于生成图像，这些图像将被用于除了直接在 HTML 中使用之外的其他地方，例如在 [API 路由](/zh-cn/guides/endpoints/#服务器端点api-路由) 中。它还允许你创建自己的自定义 `<Image />` 组件。
 
 <RecipeLinks slugs={["zh-cn/recipes/build-custom-img-component" ]}/>
 
@@ -626,9 +663,9 @@ import stars from "~/stars/docline.png";
 ```astro
 ---
 import { getImage } from "astro:assets";
-import myBackground from "../background.png"
+import myBackground from "../background.png";
 
-const optimizedBackground = await getImage({src: myBackground, format: 'webp'})
+const optimizedBackground = await getImage({src: myBackground, format: 'webp'});
 ---
 
 <div style={`background-image: url(${optimizedBackground.src});`}></div>
@@ -653,7 +690,7 @@ const optimizedBackground = await getImage({src: myBackground, format: 'webp'})
 
 不是所有用户都能以相同的方式看到图像，因此在使用图像时，无障碍性尤为重要。使用 `alt` 属性为图像提供 [描述性的 alt 文本](https://www.w3.org/WAI/tutorials/images/)。
 
-这个属性是 `<Image />` 组件必须的。如果没有提供 alt 文本，`<Image />` 将抛出一个错误。
+这个属性对于 `<Image />` 和 `<Picture />` 组件都是必需的。如果没有提供 alt 文本，将提供一个有用的错误消息，提醒你包含 `alt` 属性。
 
 如果图像仅仅是装饰性的（即不会对页面的理解有所贡献），请设置 `alt=""` 以便屏幕阅读器和其他辅助技术知道忽略该图像。
 
@@ -665,7 +702,7 @@ const optimizedBackground = await getImage({src: myBackground, format: 'webp'})
 当使用像 `pnpm` 这样的[严格包管理器](https://pnpm.io/pnpm-vs-npm#npms-flat-tree)时，即使 Sharp 已经是 Astro 的依赖项，你也可能需要手动安装 Sharp 到你的项目中：
 
 ```bash
-pnpm install sharp
+pnpm add sharp
 ```
 :::
 
@@ -744,7 +781,7 @@ export default defineConfig({
 
 ```astro title="src/pages/posts/post-1.astro" del={2} ins={3}
 ---
-import rocket from '~/assets/rocket.png'
+import rocket from '~/assets/rocket.png';
 import rocket from '../../assets/rocket.png';
 ---
 ```
@@ -805,10 +842,10 @@ import rocket from '../images/rocket.svg';
 # 我的 Markdown 页面
 
 <!-- 现在可以使用本地图像 -->
-![A starry night sky.](../../images/stars.png)
+![繁星点点的夜空](../../images/stars.png)
 
 <!-- 将你的图像放在你的内容旁边！ -->
-![A starry night sky.](./stars.png)
+![繁星点点的夜空](./stars.png)
 ```
 
 如果你需要对图像属性做更多的控制，我们建议使用 `.mdx` 文件格式，除了 Markdown 语法，你还可以使用 Astro 的 `<Image />` 组件或 JSX `<img />` 标签。使用 [MDX 集成](/zh-cn/guides/integrations-guide/mdx/) 为 Astro 添加对 MDX 的支持。
@@ -818,6 +855,7 @@ import rocket from '../images/rocket.svg';
 
 如果你在 Astro v2.x 中使用了图像集成，请完成以下步骤：
 
+<Steps>
 1. 移除 `@astrojs/image` 集成。
 
     你必须通过卸载并从你的 `astro.config.mjs` 文件中删除它，来 [移除集成](/zh-cn/guides/integrations-guide/#移除集成)。
@@ -864,9 +902,9 @@ import rocket from '../images/rocket.svg';
       ```astro title="src/components/MyComponent.astro" del= {2,11} ins={3}
       ---
       import { Image } from '@astrojs/image/components';
-      import { Image } from 'astro:assets'
-      import localImage from "../assets/logo.png";
-      const localAlt = "The Astro Logo";
+      import { Image } from 'astro:assets';
+      import localImage from '../assets/logo.png';
+      const localAlt = 'The Astro Logo';
       ---
 
       <Image
@@ -892,6 +930,7 @@ import rocket from '../images/rocket.svg';
       },
     });
     ```
+</Steps>
 
 ### 更新内容集合结构
 
@@ -907,9 +946,9 @@ import rocket from '../images/rocket.svg';
 ---
 import Sprite from '../assets/logo.svg?url';
 ---
-  <svg>
-    <use xlink:href={Sprite + '#cart'} />
-  </svg>
+<svg>
+  <use xlink:href={Sprite + '#cart'} />
+</svg>
 ```
 
 这种方法可以确保获得 URL 字符串。请记住，在开发过程中，Astro 使用 `src/` 路径，但在构建过程中，它会生成类似于 `/_astro/cat.a6737dd3.png` 的哈希路径。

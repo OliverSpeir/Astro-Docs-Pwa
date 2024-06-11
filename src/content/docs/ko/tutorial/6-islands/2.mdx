@@ -11,6 +11,7 @@ import Checklist from '~/components/Checklist.astro';
 import MultipleChoice from '~/components/tutorial/MultipleChoice.astro';
 import Option from '~/components/tutorial/Option.astro';
 import PreCheck from '~/components/tutorial/PreCheck.astro';
+import { Steps } from '@astrojs/starlight/components';
 
 이제 대화형 요소를 위한 Astro 섬을 구축할 수 있으므로 바닐라 JavaScript와 CSS만으로 꽤 많은 작업을 수행할 수 있다는 사실을 잊지 마세요!
 
@@ -23,6 +24,7 @@ import PreCheck from '~/components/tutorial/PreCheck.astro';
 
 ## 테마 토글 아이콘 추가 및 스타일 지정
 
+<Steps>
 1. `src/components/ThemeIcon.astro`에 새 파일을 만들고 다음 코드를 붙여넣습니다.
 
     ```astro title="src/components/ThemeIcon.astro"
@@ -43,7 +45,6 @@ import PreCheck from '~/components/tutorial/PreCheck.astro';
       .sun { fill: black; }
       .moon { fill: transparent; }
       
-
       :global(.dark) .sun { fill: transparent; }
       :global(.dark) .moon { fill: white; }
     </style>
@@ -67,11 +68,13 @@ import PreCheck from '~/components/tutorial/PreCheck.astro';
     ```
 
 3. `http://localhost:4321`에서 브라우저 미리보기를 방문하여 이제 모든 페이지에서 아이콘을 확인하세요. 클릭해 볼 수는 있지만 아직 대화형으로 만드는 스크립트를 작성하지 않았습니다.
+</Steps>
 
 ## 어두운 테마에 CSS 스타일 추가
 
 어두운 테마에서 사용할 대체 색상을 선택하세요.
 
+<Steps>
 1. `global.css`에서 몇 가지 어두운 스타일을 정의합니다. 직접 선택하거나 복사하여 붙여넣을 수 있습니다.
 
     ```css title="src/styles/global.css"
@@ -84,11 +87,13 @@ import PreCheck from '~/components/tutorial/PreCheck.astro';
       color: #fff;
     }
     ```
+</Steps>
 
 ## 클라이언트 측 상호작용 추가
 
 Astro 컴포넌트에 상호작용을 추가하려면 `<script>` 태그를 사용할 수 있습니다. 이 스크립트는 `localStorage`에서 현재 테마를 확인 및 설정하고 아이콘을 클릭할 때 테마를 전환할 수 있습니다.
 
+<Steps>
 1. `src/components/ThemeIcon.astro`의 `<style>` 태그 뒤에 다음 `<script>` 태그를 추가합니다.
 
     ```astro title="src/components/ThemeIcon.astro" ins={9-37}
@@ -132,6 +137,7 @@ Astro 컴포넌트에 상호작용을 추가하려면 `<script>` 태그를 사�
     ```
 
 2. `http://localhost:4321`에서 브라우저 미리보기를 확인하고 테마 아이콘을 클릭하세요. 밝은 테마와 어두운 테마 간에 변경할 수 있는지 확인하세요.
+</Steps>
 
 <Box icon="question-mark">
 

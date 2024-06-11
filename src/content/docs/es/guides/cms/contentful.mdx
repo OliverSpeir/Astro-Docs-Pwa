@@ -5,10 +5,9 @@ type: cms
 service: Contentful
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro'
+import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-
-
+import { Steps } from '@astrojs/starlight/components';
 
 [Contentful](https://www.contentful.com/) es un CMS headless que te permite administrar contenido, integrar con otros servicios y publicar en múltiples plataformas.
 
@@ -79,7 +78,7 @@ Para conectar tu proyecto Astro con tu espacio de Contentful, instala los siguie
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm install contentful @contentful/rich-text-html-renderer
+  pnpm add contentful @contentful/rich-text-html-renderer
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -334,7 +333,7 @@ Usa el mismo método para obtener tus datos de Contentful que arriba, pero esta 
 
 #### Generación de sitios estáticos
 
-Si estás usando el modo estático predeterminado de Astro, usarás [rutas dinámicas](/es/core-concepts/routing/#rutas-dinámicas) y la función `getStaticPaths()`. Esta función se llamará en tiempo de compilación para generar la lista de rutas que se convierten en páginas.
+Si estás usando el modo estático predeterminado de Astro, usarás [rutas dinámicas](/es/guides/routing/#rutas-dinámicas) y la función `getStaticPaths()`. Esta función se llamará en tiempo de compilación para generar la lista de rutas que se convierten en páginas.
 
 Crea un archivo nuevo llamado `[slug].astro` en `src/pages/posts/`.
 
@@ -448,7 +447,7 @@ const data = await contentfulClient.getEntries<BlogPost>({
 ---
 ```
 
-Si la entrada no fue encontrada, puedes redirigir al usuario a la página 404 usando [`Astro.redirect`](/es/core-concepts/routing/#redirecciones-dinámicas).
+Si la entrada no fue encontrada, puedes redirigir al usuario a la página 404 usando [`Astro.redirect`](/es/guides/routing/#redirecciones-dinámicas).
 
 ```astro title="src/pages/posts/[slug].astro" ins={7, 12-13}
 ---
@@ -546,22 +545,26 @@ Si tu proyecto esta usando el modo estático por defecto de Astro, necesitarás 
 ##### Netlify
 
 Para configurar un webhook en Netlify:
- 
+
+<Steps> 
 1. Ve a tu panel de control y haz clic en **Build & deploy**.
 
 2. En la pestaña **Continuous Deployment**, encuentra la sección **Build hooks** y haz clic en **Add build hook**.
 
 3. Proporciona un nombre para tu webhook y selecciona la rama en la que quieres que se ejecute la compilación. Haz clic en **Save** y copia la URL generada.
+</Steps>
 
 ##### Vercel
 
 Para configurar un webhook en Vercel:
- 
+
+<Steps> 
 1. Ve a tu panel de control y haz clic en **Settings**.
 
 2. En la pestaña **Git**, encuentra la sección **Deploy Hooks**.
 
 3. Proporciona un nombre para tu webhook y selecciona la rama en la que quieres que se ejecute la compilación. Haz clic en **Add** y copia la URL generada.
+</Steps>
 
 ##### Agregando un webhook a Contentful
 

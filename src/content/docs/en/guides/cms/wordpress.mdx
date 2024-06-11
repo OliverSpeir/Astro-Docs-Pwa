@@ -6,7 +6,7 @@ stub: false
 service: WordPress
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro'
+import { FileTree } from '@astrojs/starlight/components';
 import Grid from '~/components/FluidGrid.astro'
 import Card from '~/components/ShowcaseCard.astro'
 
@@ -14,7 +14,7 @@ import Card from '~/components/ShowcaseCard.astro'
 
 ## Integrating with Astro
 
-WordPress comes with a built-in [WordPress REST API](https://developer.wordpress.org/rest-api/) to connect your WordPress data to Astro. You can optionally install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) on your site to use GraphQL.
+WordPress comes with a built-in [WordPress REST API](https://developer.wordpress.org/rest-api/) to connect your WordPress data to Astro. You can optionally install [WPGraphQL](https://wordpress.org/plugins/wp-graphql/) or [Gato GraphQL](https://wordpress.org/plugins/gatographql/) on your site to use GraphQL.
 
 ### Prerequisites
 
@@ -49,7 +49,7 @@ const posts = await res.json();
 }
 ```
 
-The WordPress REST API includes [global parameters](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/) such as `_fields` and `embed`. 
+The WordPress REST API includes [global parameters](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/) such as `_fields` and `_embed`. 
 
 A large quantity of data is available to you via this API, so you may wish to only fetch certain fields. You can restrict your response by adding the [`_fields`](https://developer.wordpress.org/rest-api/using-the-rest-api/global-parameters/#_fields) parameter to the API URL, for example: `[YOUR-SITE]/wp/v2/posts?_fields=author,id,excerpt,title,link` 
 
@@ -113,7 +113,7 @@ let posts = await res.json();
 
 ### Using the WordPress API to generate pages
 
-The page `src/pages/dinos/[slug].astro` [dynamically generates a page](/en/core-concepts/routing/#dynamic-routes) for each dinosaur.
+The page `src/pages/dinos/[slug].astro` [dynamically generates a page](/en/guides/routing/#dynamic-routes) for each dinosaur.
 
 ```astro title="/src/pages/dinos/[slug].astro"
 ---
@@ -157,7 +157,7 @@ let [post] = await res.json();
 ---
 ```
 
-The `_embedded['wp:featuredmedia']['0'].media_details.sizes.medium.source_url` property is returned, and can be used to display the featured image on each dinosuar page. (Replace `medium` with your desired image size.)
+The `_embedded['wp:featuredmedia']['0'].media_details.sizes.medium.source_url` property is returned, and can be used to display the featured image on each dinosaur page. (Replace `medium` with your desired image size.)
 
 ```astro title="/src/pages/dinos/[slug].astro" {3}
 <Layout title={post.title.rendered}>
@@ -184,7 +184,6 @@ To deploy your site visit our [deployment guides](/en/guides/deploy/) and follow
 
 The following sites use Astro + WordPress in production:
 
-- [Soft Hard System](https://softhardsystem.com/) by Rafid Muhymin Wafi — [source code on GitHub](https://github.com/RafidMuhymin/softhardsystem)
 - [Dinos!](https://wc-dinos.netlify.app/) by Anindo Neel Dutta — [source code on GitHub](https://github.com/leen-neel/astro-wordpress)
 
 ## Themes

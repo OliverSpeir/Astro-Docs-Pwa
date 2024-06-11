@@ -3,6 +3,7 @@ title: 按需渲染适配器
 i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import { Steps } from '@astrojs/starlight/components';
 import RecipeLinks from '~/components/RecipeLinks.astro';
 import IntegrationsNav from '~/components/IntegrationsNav.astro'
 
@@ -25,7 +26,7 @@ Astro 允许你为部分或所有页面和端点选择**按需渲染**。这也�
 
 ## 官方适配器
 
-Astro 为 [NodeJs](https://nodejs.org/)、[Vercel](https://vercel.com/)、[Netlify](https://www.netlify.com/) 和 [Cloudflare](https://www.cloudflare.com/) 维护了官方的适配器。
+Astro 为 [Node.js](https://nodejs.org/)、[Vercel](https://vercel.com/)、[Netlify](https://www.netlify.com/) 和 [Cloudflare](https://www.cloudflare.com/) 维护了官方的适配器。
 
 在我们的集成目录中，你也可以找到更多[社区维护的适配器](https://astro.build/integrations/?search=&categories%5B%5D=adapters)（例如 Deno、SST、AWS）。
 
@@ -50,7 +51,7 @@ Astro 的两种按需渲染输出模式（`server` 和 `hybrid`）都允许你�
 
 #### 使用 `astro add` 安装
 
-你可以使用以下 `astro add` 命令添加任何 [由 Astro 维护的官方适配器](/zh-cn/guides/integrations-guide/)。这将安装一步适配器并对你的 `astro.config.mjs` 文件进行适当的更改。例如，要安装 Vercel 适配器，请运行：
+你可以使用以下 `astro add` 命令添加任何 [由 Astro 维护的官方适配器](/zh-cn/guides/integrations-guide/)。这将会一步到位地完成适配器的安装，并对 `astro.config.mjs` 文件进行适当的修改。例如，要安装 Vercel 适配器，请运行：
 
 <PackageManagerTabs>
   <Fragment slot="npm">
@@ -74,6 +75,7 @@ Astro 的两种按需渲染输出模式（`server` 和 `hybrid`）都允许你�
 
 你也可以通过手动安装包并更新 `astro.config.mjs` 自己添加适配器。例如，要手动安装 Vercel 适配器：
 
+<Steps>
 1. 使用你首选的包管理器将适配器安装到你的项目依赖项：
 
    <PackageManagerTabs>
@@ -84,7 +86,7 @@ Astro 的两种按需渲染输出模式（`server` 和 `hybrid`）都允许你�
      </Fragment>
      <Fragment slot="pnpm">
      ```shell
-     pnpm install @astrojs/vercel
+     pnpm add @astrojs/vercel
      ```
      </Fragment>
      <Fragment slot="yarn">
@@ -108,7 +110,7 @@ Astro 的两种按需渲染输出模式（`server` 和 `hybrid`）都允许你�
     ```
 
     注意，不同的适配器可能也有不同的配置设置。请阅读每个适配器的文档，并将任何必要的配置选项应用到 `astro.config.mjs` 中你选择的适配器。
-
+</Steps>
 
 ### 配置 `sever` 或 `hybrid` 模式
 
@@ -126,18 +128,6 @@ export default defineConfig({
     mode: "standalone"
   })
 });
-```
-
-然后，你也可以选择在任何页面或路由上通过导出 `const prerender = true` 来覆盖 `server` 模式的默认按需渲染：
-
-```astro title="src/pages/my-static-page.astro" ins={2}
----
-export const prerender = true;
-// ...
----
-<html>
-  <!-- 这里是静态的、预渲染的页面... -->
-</html>
 ```
 
 ### 在 `server` 模式中选择加入预渲染
@@ -296,4 +286,4 @@ console.log(Astro.request.method) // GET (在浏览器中导航到时)
 
 该函数接收一个[端点上下文对象](/zh-cn/reference/api-reference/#端点上下文)并返回一个 [Response](https://developer.mozilla.org/zh-CN/docs/Web/API/Response)。
 
-要了解更多信息，请参阅我们的[端点指南](/zh-cn/core-concepts/endpoints/#服务器端点api-路由)。
+要了解更多信息，请参阅我们的[端点指南](/zh-cn/guides/endpoints/#服务器端点api-路由)。

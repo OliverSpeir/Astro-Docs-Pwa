@@ -4,6 +4,8 @@ description: Comment déployer votre site Astro sur le web en utilisant Deno.
 type: deploy
 i18nReady: true
 ---
+import ReadMore from '~/components/ReadMore.astro';
+import { Steps } from '@astrojs/starlight/components';
 
 Vous pouvez déployer un site Astro rendu côté serveur sur [Deno Deploy](https://deno.com/deploy), un système distribué qui exécute JavaScript, TypeScript et WebAssembly à la pointe de la technologie, dans le monde entier.
 
@@ -15,7 +17,9 @@ Ce guide suppose que vous avez déjà installé [Deno](https://deno.com/).
 
 ## Configuration du projet
 
-Votre projet Astro peut être déployé sur [Deno Deploy](https://deno.com/deploy) en tant que site rendu côté serveur (SSR). Deno Deploy ne prend pas en charge les sites statiques.
+Cette page fournit des instructions pour déployer votre projet Astro sur [Deno Deploy](https://deno.com/deploy) en tant que site rendu côté serveur (SSR).
+
+Pour déployer un site statique, voir [le tutoriel Deno sur le déploiement d'un site statique](https://docs.deno.com/deploy/tutorials/static-site).
 
 ### Adaptateur pour le SSR
 
@@ -29,13 +33,14 @@ npx astro add deno
 
 Si vous préférez installer l'adaptateur manuellement, suivez les deux étapes suivantes :
 
+<Steps>
 1. Installez [l'adaptateur `@astrojs/deno`][Deno adapter] aux dépendances de votre projet en utilisant votre gestionnaire de paquets préféré. Si vous utilisez npm ou si vous n'êtes pas sûr, exécutez ceci dans le terminal :
 
     ```bash
-   npm install @astrojs/deno
+    npm install @astrojs/deno
     ```
 
-1. Mettez à jour votre fichier de configuration du projet `astro.config.mjs` avec les changements ci-dessous.
+2. Mettez à jour votre fichier de configuration du projet `astro.config.mjs` avec les changements ci-dessous.
 
      ```js ins={3,6-7}
     // astro.config.mjs
@@ -48,7 +53,7 @@ Si vous préférez installer l'adaptateur manuellement, suivez les deux étapes 
     });
     ```
 
-Ensuite, mettez à jour votre script `preview` dans `package.json` avec le changement ci-dessous.
+    Ensuite, mettez à jour votre script `preview` dans `package.json` avec le changement ci-dessous.
 
     ```json del={8} ins={9}
     // package.json
@@ -64,13 +69,14 @@ Ensuite, mettez à jour votre script `preview` dans `package.json` avec le chang
     }
     ```
 
-Vous pouvez maintenant utiliser cette commande pour prévisualiser votre site Astro de façon locale avec Deno.
+    Vous pouvez maintenant utiliser cette commande pour prévisualiser votre site Astro de façon locale avec Deno.
 
     ```bash
     npm run preview
     ```
+</Steps>
 
-## Comment déployer
+## Comment déployer un site Astro en SSR
 
 Vous pouvez déployer Deno Deploy via les actions GitHub ou en utilisant l'interface de ligne de commande (CLI) de Deno Deploy.
 
@@ -78,6 +84,7 @@ Vous pouvez déployer Deno Deploy via les actions GitHub ou en utilisant l'inter
 
 Si votre projet est stocké sur GitHub, le [site Deno Deploy](https://dash.deno.com/) vous guidera dans la mise en place des actions GitHub pour déployer votre site Astro.
 
+<Steps>
 1. Poussez votre code vers un dépôt GitHub public ou privé.
 
 2. Connectez-vous sur [Deno Deploy](https://dash.deno.com/) avec votre compte GitHub, et cliquez sur [New Project](https://dash.deno.com).
@@ -100,7 +107,7 @@ Si votre projet est stocké sur GitHub, le [site Deno Deploy](https://dash.deno.
 
         steps:
           - name: Clone repository
-            uses: actions/checkout@v3
+            uses: actions/checkout@v4
 
           # Vous n'utilisez pas npm ? Remplacez `npm ci` par `yarn install` ou `pnpm i`
           - name: Install dependencies
@@ -120,18 +127,19 @@ Si votre projet est stocké sur GitHub, le [site Deno Deploy](https://dash.deno.
 
 5. Après avoir validé ce fichier YAML et l'avoir poussé sur GitHub sur la branche de déploiement configurée, le déploiement devrait commencer automatiquement !
 
-Vous pouvez suivre la progression en utilisant l'onglet "Actions" sur votre page de dépôt GitHub, ou sur [Deno Deploy](https://dash.deno.com).
-
+    Vous pouvez suivre la progression en utilisant l'onglet "Actions" sur votre page de dépôt GitHub, ou sur [Deno Deploy](https://dash.deno.com).
+</Steps>
 
 ### Déploiement CLI
 
+<Steps>
 1. Installez le [Deno Deploy CLI](https://docs.deno.com/deploy/manual/deployctl).
 
     ```bash
     deno install --allow-read --allow-write --allow-env --allow-net --allow-run --no-check -r -f https://deno.land/x/deploy/deployctl.ts
     ```
 
-3. Exécutez l'étape de compilation de votre Astro.
+2. Exécutez l'étape de compilation de votre Astro.
 
     ```bash
     npm run build
@@ -139,13 +147,13 @@ Vous pouvez suivre la progression en utilisant l'onglet "Actions" sur votre page
 
 3. Exécutez `deployctl` pour déployer !
 
-Dans la commande ci-dessous, remplacez `<ACCESS-TOKEN>` par votre [Personal Access Token](https://dash.deno.com/account#access-tokens) et `<MY-DENO-PROJECT>` par le nom de votre projet Deno Deploy.
+    Dans la commande ci-dessous, remplacez `<ACCESS-TOKEN>` par votre [Personal Access Token](https://dash.deno.com/account#access-tokens) et `<MY-DENO-PROJECT>` par le nom de votre projet Deno Deploy.
 
     ```bash
     DENO_DEPLOY_TOKEN=<ACCESS-TOKEN> deployctl deploy --project=<MY-DENO-PROJECT> --no-static --include=./dist ./dist/server/entry.mjs
     ```
 
-Vous pouvez suivre tous vos déploiements sur [Deno Deploy](https://dash.deno.com).
+    Vous pouvez suivre tous vos déploiements sur [Deno Deploy](https://dash.deno.com).
 
 4. (Optionnel) Pour simplifier la construction et le déploiement en une seule commande, ajoutez un script `deploy-deno` dans `package.json`.
 
@@ -163,13 +171,13 @@ Vous pouvez suivre tous vos déploiements sur [Deno Deploy](https://dash.deno.co
     }
     ```
 
-Vous pouvez alors utiliser cette commande pour construire et déployer votre site Astro en une seule étape.
+    Vous pouvez alors utiliser cette commande pour construire et déployer votre site Astro en une seule étape.
 
     ```bash
     DENO_DEPLOY_TOKEN=<ACCESS-TOKEN> npm run deno-deploy
     ```
+</Steps>
 
-
-📚 En savoir plus sur [SSR in Astro](/fr/guides/server-side-rendering/).
+<ReadMore>En savoir plus sur [SSR in Astro](/fr/guides/server-side-rendering/).</ReadMore>
 
 [Deno adapter]: https://github.com/denoland/deno-astro-adapter

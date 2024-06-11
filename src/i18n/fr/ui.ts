@@ -1,5 +1,4 @@
 import { UIDictionary } from '../translation-checkers';
-
 export default UIDictionary({
 	'a11y.skipLink': 'Aller au contenu principal',
 	'a11y.sectionLink': 'Titre de la section',
@@ -82,7 +81,8 @@ export default UIDictionary({
 	'integrations.footerTitle': "Plus d'intégrations",
 	'integrations.renderers': "Framework d'interface utilisateur",
 	'integrations.adapters': 'Adaptateurs SSR',
-	'integrations.others': 'Autres',
+	'integrations.others': 'Autres intégrations',
+	'integrations.more': "Plus d'intégrations",
 	// Checklist component
 	'checklist.or': 'ou',
 	// Multiple Choice component
@@ -104,6 +104,10 @@ export default UIDictionary({
 	'feedback.categoryGroupLabel': 'Choisissez le type de commentaire',
 	'feedback.issue': 'Problème',
 	'feedback.createIssue': 'Créer une issue GitHub',
+	'feedback.createIssue.description':
+		"Le moyen le plus rapide d'alerter notre équipe d'un problème.",
+	'feedback.sendFeedback': 'Envoyez-nous un commentaire',
+	'feedback.sendFeedback.description': 'Envoyez-nous directement un message.',
 	'feedback.idea': 'Idée',
 	'feedback.other': 'Autres',
 	'feedback.messageA11yLabel': 'Message',
@@ -111,8 +115,6 @@ export default UIDictionary({
 	'feedback.submit': 'Envoyez des commentaires',
 	'feedback.close': 'Fermer le formulaire de commentaires',
 	'feedback.success': 'Merci ! Nous avons reçu vos commentaires.',
-	// `<FileTree>` component
-	'fileTree.directoryLabel': 'Répertoire',
 	// Code snippet vocabulary
 	'expressiveCode.terminalWindowFallbackTitle': 'Fenêtre du terminal',
 	'expressiveCode.copyButtonTooltip': 'Copier dans le presse-papiers',
@@ -129,4 +131,6 @@ export default UIDictionary({
 	// Starlight banner
 	'starlight.title': 'Vous voulez créer votre propre Doc ?',
 	'starlight.description': 'Prenez ce modèle pour commencer.',
+	// `<StudioHeading>` component
+	'studioHeading.label': 'Fonctionnalité Studio',
 });

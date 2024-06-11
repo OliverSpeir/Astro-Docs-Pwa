@@ -3,7 +3,7 @@ title: Recursos estáticos
 description: Aprende a importar diferentes tipos de contenido con Astro.
 i18nReady: true
 ---
-
+import ReadMore from '~/components/ReadMore.astro'
 import RecipeLinks from "~/components/RecipeLinks.astro";
 
 Astro es compatible con la mayoría de los recursos estáticos sin necesidad de configuración. Puedes usar `import` en cualquier lugar de tu proyecto (incluido el script de frontmatter de Astro) y Astro incluirá una copia optimizada de ese recurso estático en la compilación final. `@import` también es compatible dentro del CSS y `<style>`.
@@ -23,11 +23,11 @@ Los siguientes tipos de archivos son compatibles por defecto en Astro:
 - Módulos CSS (`.module.css`)
 - Imágenes & otros archivos (`.svg`, `.jpg`, `.png`, etc.)
 
-Adicionalmente, puedes extender la lista de tipos de archivos soportados por los diferentes [UI Frameworks](/es/core-concepts/framework-components/) que soporta Astro, como React, Svelte y Vue. También puedes instalar la [integración de Astro MDX](/es/guides/integrations-guide/mdx/) y usar archivos `.mdx` en tu proyecto.
+Adicionalmente, puedes extender la lista de tipos de archivos soportados por los diferentes [UI Frameworks](/es/guides/framework-components/) que soporta Astro, como React, Svelte y Vue. También puedes instalar la [integración de Astro MDX](/es/guides/integrations-guide/mdx/) y usar archivos `.mdx` en tu proyecto.
 
 ## Archivos en `public/`
 
-Puedes poner cualquier recurso estático en el [directorio `public/`](/es/core-concepts/project-structure/#public) de tu proyecto, y Astro lo copiará directamente en la compilación final sin ningún cambio. Los archivos de `public/` no se construyen ni empaquetan con Astro, lo que significa que cualquier tipo de archivo es compatible. Puedes referenciar un archivo de `public/` por una ruta de URL directamente en tus plantillas HTML.
+Puedes poner cualquier recurso estático en el [directorio `public/`](/es/basics/project-structure/#public) de tu proyecto, y Astro lo copiará directamente en la compilación final sin ningún cambio. Los archivos de `public/` no se construyen ni empaquetan con Astro, lo que significa que cualquier tipo de archivo es compatible. Puedes referenciar un archivo de `public/` por una ruta de URL directamente en tus plantillas HTML.
 
 ## Declaraciones de importación
 
@@ -48,7 +48,7 @@ import { getUser } from './user';
 import type { UserType } from './user';
 ```
 
-Astro incluye compatibilidad con [TypeScript](https://www.typescriptlang.org/). Puedes importar archivos `.ts` y `.tsx` directamente a tu proyecto de Astro, e incluso escribir código TypeScript directamente dentro del [script del componente de Astro](/es/core-concepts/astro-components/#script-de-un-componente) y en cualquier [etiqueta de script hoisted](/es/guides/client-side-scripts/).
+Astro incluye compatibilidad con [TypeScript](https://www.typescriptlang.org/). Puedes importar archivos `.ts` y `.tsx` directamente a tu proyecto de Astro, e incluso escribir código TypeScript directamente dentro del [script del componente de Astro](/es/basics/astro-components/#script-de-un-componente) y en cualquier [etiqueta de script hoisted](/es/guides/client-side-scripts/).
 
 **Astro no realiza ninguna verificación de tipos por sí mismo.** La verificación de tipos debe realizarse al margen Astro, ya sea mediante el IDE o un script separado. Para chequeo de tipos en archivos Astro, puedes usar el [comando `astro check`](/es/reference/cli-reference/#astro-check).
 
@@ -62,7 +62,7 @@ import MyComponent from "./MyComponent"; // MyComponent.tsx
 
 :::
 
-📚 Lee más sobre la compatibilidad de [TypeScript en Astro.](/es/guides/typescript/)
+<ReadMore>Lee más sobre la compatibilidad de [TypeScript en Astro.](/es/guides/typescript/)</ReadMore>
 
 ## JSX / TSX
 
@@ -142,7 +142,7 @@ import txtReference from './words.txt'; // txt === '/src/words.txt'
 
 Todos los archivos que no se mencionan explícitamente en el ejemplo anterior, se pueden importar a través de ESM `import` y devolverán una URL con referencia al archivo creado. Esto puede ser útil para hacer referencia por URL a archivos que no son JS, como crear un elemento img con el atributo src que apunte a esa imagen.
 
-También puede ser útil colocar imágenes en la carpeta `public/` como se explica en la página de [estructura de proyecto](/es/core-concepts/project-structure/#public).
+También puede ser útil colocar imágenes en la carpeta `public/` como se explica en la página de [estructura de proyecto](/es/basics/project-structure/#public).
 
 :::note
 ¡Agrega **alt text** a las etiquetas `<img>` para mejorar la accesibilidad! No olvides agregar un atributo `alt="una buena descripción"` a tus elementos de imagen. Puedes dejar el atributo vacío si la imagen es puramente decorativa.

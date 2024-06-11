@@ -5,7 +5,7 @@ i18nReady: true
 
 import IntegrationsNav from '~/components/IntegrationsNav.astro'
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-
+import { Steps } from '@astrojs/starlight/components'
 
 
 **Astro integrations** add new functionality and behaviors for your project with only a few lines of code. You can write a custom integration yourself, use an official integration, or use integrations built by the community.
@@ -17,7 +17,7 @@ Integrations can…
 - Add new features to your project, like automatic sitemap generation.
 - Write custom code that hooks into the build process, dev server, and more.
 
-:::tip[INTEGRATIONS DIRECTORY]
+:::tip[Integrations directory]
 Browse or search the complete set of hundreds of official and community integrations in our [integrations directory](https://astro.build/integrations/). Find packages to add to your Astro project for authentication, analytics, performance, SEO, accessibility, UI, developer tools, and more.
 :::
 
@@ -99,7 +99,7 @@ There are three common ways to import an integration into your Astro project:
         // 3. An inline object
         {name: 'namespace:id', hooks: { /* ... */ }},
       ]
-    })
+    });
     ```
 
 Check out the [Integration API](/en/reference/integrations-reference/) reference to learn all of the different ways that you can write an integration.
@@ -110,6 +110,7 @@ Install an NPM package integration using a package manager, and then update `ast
 
 For example, to install the `@astrojs/sitemap` integration:
 
+<Steps>
 1. Install the integration to your project dependencies using your preferred package manager:
 
    <PackageManagerTabs>
@@ -144,6 +145,7 @@ For example, to install the `@astrojs/sitemap` integration:
     ```
 
     Note that different integrations may have different configuration settings. Read each integration's documentation, and apply any necessary config options to your chosen integration in `astro.config.mjs`
+</Steps>
 
 ### Custom Options
 
@@ -231,7 +233,7 @@ To remove an integration, first uninstall the integration from your project
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm uninstall @astrojs/react
+  pnpm remove @astrojs/react
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -252,7 +254,7 @@ export default defineConfig({
   integrations: [
     react()
   ]
-})
+});
 ```
 
 ## Finding More Integrations

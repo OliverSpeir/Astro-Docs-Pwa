@@ -4,19 +4,19 @@ description: 'Cómo instalar Astro manualmente con NPM, PNPM, o Yarn.'
 i18nReady: true
 ---
 import Button from '~/components/Button.astro'
-import FileTree from '~/components/FileTree.astro';
-import InstallGuideTabGroup from '~/components/TabGroup/InstallGuideTabGroup.astro';
+import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import ReadMore from '~/components/ReadMore.astro'
 
 Esta guía te guíara paso a paso para instalar manualmente y configurar un nuevo proyecto de Astro si prefieres no usar la [la herramienta CLI automática](/es/install/auto/).
 
 #### ¿Prefieres una forma más rápida de empezar?
 
-<Button href="/es/install/auto/">Try the create astro CLI wizard →</Button>
+<Button link="/es/install/auto/">Try the create astro CLI wizard →</Button>
 
 #### Prerrequisitos
 
-- **Node.js** - `v18.14.1` o mayor.
+- **Node.js** - `v18.17.1` o `v20.3.0` o superior. ( `v19` no es soportada.)
 - **Editor de código** - Recomendamos [VS Code](https://code.visualstudio.com/) con nuestra [extensión oficial de Astro](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode).
 - **Terminal** - Astro es usado a través de la interfaz de línea de comandos (CLI).
 
@@ -69,7 +69,7 @@ Astro debe ser instalado localmente, no globalmente. Asegúrate de *no* ejecutar
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm install astro
+  pnpm add astro
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -147,9 +147,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({});
 ```
 
-Si deseas incluir [componentes de frameworks](/es/core-concepts/framework-components/) como React, Svelte, etc.; o usar otras herramientas de desarrollo como Tailwind o Partytown en tu proyecto, lee nuestra [guía de integraciones](/es/guides/integrations-guide/).
+Si deseas incluir [componentes de frameworks](/es/guides/framework-components/) como React, Svelte, etc.; o usar otras herramientas de desarrollo como Tailwind o Partytown en tu proyecto, lee nuestra [guía de integraciones](/es/guides/integrations-guide/).
 
-📚 Lee nuestra guía de [configuración de API](/es/reference/configuration-reference/) para más información.
+<ReadMore>Lee nuestra guía de [configuración de API](/es/reference/configuration-reference/) para más información.</ReadMore>
 
 ## 6. Agrega soporte para TypeScript
 
@@ -171,7 +171,7 @@ Finalmente, crea un archivo `src/env.d.ts` para que TypeScript infiera los tipos
 /// <reference types="astro/client" />
 ```
 
-Lee nuestra [guía para configurar TypeScript](/es/guides/typescript/#configuración) para más información.
+<ReadMore>Lee nuestra [guía para configurar TypeScript](/es/guides/typescript/#configuración) para más información.</ReadMore>
 
 ## 7. Siguientes pasos
 

@@ -8,15 +8,15 @@ i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
 
-此适配器可以部署你的 [`hybrid` 或 `server` 渲染站点](/zh-cn/core-concepts/rendering-modes/#按需渲染) 到 [Netlify](https://www.netlify.com/)。
+此适配器可以部署你的 [`hybrid` 或 `server` 渲染站点](/zh-cn/basics/rendering-modes/#按需渲染) 到 [Netlify](https://www.netlify.com/)。
 
-如果你正在使用 Astro 作为[静态站点生成器](/zh-cn/core-concepts/rendering-modes/#预渲染)，则不需要适配器。
+如果你正在使用 Astro 作为[静态站点生成器](/zh-cn/basics/rendering-modes/#预渲染)，则不需要适配器。
 
 在我们的 [Netlify 部署指南](/zh-cn/guides/deploy/netlify/) 中学习如何部署你的 Astro 网站。
 
 ## 为什么是 Astro Netlify
 
-[Netlify](https://www.netlify.com/) 是一个部署平台，允许你通过直接连接 GitHub 仓库来托管您的网站。这个适配器增强了 Astro 的构建流程，为通过 Netlify 部署项目做好准备。
+[Netlify](https://www.netlify.com/) 是一个部署平台，允许你通过直接连接 GitHub 仓库来托管你的网站。这个适配器增强了 Astro 的构建流程，为通过 Netlify 部署项目做好准备。
 
 ## 安装
 
@@ -64,7 +64,7 @@ Astro 包含了一个 `astro add` 命令，用于自动设置官方集成。如�
   </Fragment>
 </PackageManagerTabs>
 
-然后，将适配器和你所需的[按需渲染模式](/zh-cn/core-concepts/rendering-modes/#按需渲染)添加到你的 `astro.config.*` 文件中：
+然后，将适配器和你所需的[按需渲染模式](/zh-cn/basics/rendering-modes/#按需渲染)添加到你的 `astro.config.*` 文件中：
 
    ```js title="astro.config.mjs" ins={2, 6-7}
     import { defineConfig } from 'astro/config';
@@ -124,7 +124,7 @@ declare namespace App {
 
 这不适用于预渲染的页面。
 
-### 在 Edge Functions 中运行 Astro 中间件
+### 在 Netlify Edge Functions 上运行 Astro 中间件
 
 任何 Astro 中间件都会在构建时应用于预渲染页面，在运行时应用于按需渲染页面。
 
@@ -132,7 +132,7 @@ declare namespace App {
 
 ```js title="astro.config.mjs" ins={8}
 import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   // ...
@@ -143,7 +143,9 @@ export default defineConfig({
 });
 ```
 
-配置 `edgeMiddleware: true` 将会将你的中间件部署为 Edge Function，并在所有路由上运行它——包括预渲染的页面。但是，中间件中指定的 locals 不会对任何预渲染的页面可用，因为它们已经在构建时完全渲染了。
+当 `edgeMiddleware` 启用时，边缘函数将为所有请求执行你的中间件代码，包括静态资产、预渲染页面和按需渲染页面。
+
+对于按需渲染的页面，`context.locals` 对象会被 JSON 序列化并通过标头发送给无服务器函数，由该函数执行渲染。作为安全措施，除非请求来自生成的边缘函数，否则无服务器函数将拒绝服务，并返回 `403 Forbidden` 响应。
 
 ### Netlify 图片 CDN 支持
 
@@ -154,7 +156,7 @@ export default defineConfig({
 
 ```js title="astro.config.mjs" ins={8}
 import { defineConfig } from 'astro/config';
-import netlify from '@astrojs/netlify/functions';
+import netlify from '@astrojs/netlify';
 
 export default defineConfig({
   // ...
@@ -164,13 +166,30 @@ export default defineConfig({
   }),
 });
 ```
-:::caution
-这个适配器不支持你的 Astro 配置中的 `image.domains` 和 `image.remotePatterns` 属性。要[为 Netlify 图片 CDN 指定远程路径](https://docs.netlify.com/image-cdn/overview/#remote-path)，请使用 `netlify.toml` 中的 `remote_images` 字段。
-:::
+如果你使用的图片托管在另一个域名上，你必须使用 [`image.domains`](/zh-cn/reference/configuration-reference/#imagedomains) 或 [`image.remotePatterns`](/zh-cn/reference/configuration-reference/#imageremotepatterns) 配置选项授权该域名或 URL 模式：
 
-### 静态站点和重定向
+```js title="astro.config.mjs" ins={8-10}
+import { defineConfig } from 'astro/config';
+import netlify from '@astrojs/netlify';
 
-对于静态站点，你通常不需要适配器。但是，如果你在 Astro 配置中使用了 `redirects` 配置，Netlify 适配器可以将其转换为正确的 `_redirects` 格式。
+export default defineConfig({
+    // ...
+    output: 'server',
+    adapter: netlify(),
+    image: {
+      domains: ['example.com'],
+    },
+});
+```
+要了解更多信息，请参阅[授权远程图片的指南](/zh-cn/guides/images/#授权远程图像)。如果图片托管在与你的站点相同的域名上，这不是必需的。
+
+### 使用 Netlify 适配器的静态站点
+
+对于托管在 Netlify 上的静态站点（`output: 'static'`），你通常不需要适配器。然而，某些部署功能只能通过适配器来实现。
+
+静态站点需要安装这个适配器来使用和配置 Netlify 的[图像服务](#netlify-图片-cdn-支持)。
+
+如果你在 Astro 配置中使用了 `redirects` 配置，Netlify 适配器可以将其转换为正确的 `_redirects` 格式。
 
 ```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';

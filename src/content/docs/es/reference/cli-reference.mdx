@@ -4,6 +4,7 @@ i18nReady: true
 ---
 import Since from '~/components/Since.astro';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import ReadMore from '~/components/ReadMore.astro'
 
 Puedes usar la Interfaz de Línea de Comandos (CLI) proporcionada por Astro para desarrollar, construir y previsualizar tu proyecto desde una ventana de la terminal.
 
@@ -188,25 +189,6 @@ Si has inicializado tu proyecto usando [el asistente `create astro`](/es/install
 
 Corre el servidor de desarrollo de Astro. Es un servidor HTTP local que no empaqueta recursos. Usa Hot Module Replacement (HMR) para actualizar tu navegador a medida que guardas los cambios en tu editor.
 
-<h3>Banderas</h3>
-
-Usa estas banderas para personalizar el comportamiento del servidor de desarrollo de Astro. Para banderas compartidas con otros comandos de Astro, puedes ver [banderas comunes](#banderas-comunes) más abajo.
-
-#### `--port <number>`
-
-Especifica en qué puerto se ejecuta el servidor. El valor predeterminado es `4321`.
-
-#### `--host [dirección de host opcional]`
-
-Establece qué direcciones IP de red debe escuchar el servidor de desarrollo (es decir, direcciones IP que no son de localhost). Esto puede ser útil para probar tu proyecto en dispositivos locales tales como un teléfono durante el desarrollo.
-
-- `--host` - escucha todas las direcciones, incluidas LAN y direcciones públicas
-- `--host <dirección-personalizada>` - expone la dirección IP especificada en `<dirección-personalizada>`
-
-:::caution
-No uses la flag `--host` para exponer el servidor de desarrollo en un entorno de producción. El servidor de desarrollo está diseñado únicamente para uso local mientras desarrollas tu proyecto.
-:::
-
 ## `astro build`
 
 Construye tu proyecto para producción. Por defecto, Astro generará archivos estáticos y los colocará en el directorio `dist/`. Si [SSR está habilitado](/es/guides/server-side-rendering/), Astro generará los archivos necesarios para que el servidor renderice tu proyecto.
@@ -215,7 +197,7 @@ Se puede combinar con la [bandera común](#banderas-comunes) documentada a conti
 
 ## `astro preview`
 
-Inicia un servidor local para servir tus archivos estáticos compilados en `dist/`.
+Inicia un servidor local para servir el contenido de su directorio estático (`dist/` por defecto) creado al ejecutar `astro build`.
 
 Este comando es útil para obtener una vista previa de tu proyecto usando los archivos generados en la compilación final, antes de ser desplegado. Este comando no está diseñado para ejecutarse en producción. Para obtener ayuda con el despliegue a producción, consulta nuestra guía de [despliegue de un sitio web de Astro](/es/guides/deploy/).
 
@@ -229,11 +211,15 @@ Ejecuta diagnósticos (como verificación de tipos dentro de archivos `.astro`) 
 
 Este comando está diseñado para usarse en workflows de CI.
 
-:::note
-Este comando solo verifica los tipos dentro de los archivos `.astro`.
-:::
+<h3>Flags</h3>
 
-📚 Lee más sobre la [compatibilidad con TypeScript en Astro](/es/guides/typescript/).
+Utilice estas flags para personalizar el comportamiento del comando.
+
+#### `--watch`
+
+El comando observará cualquier cambio en su proyecto e informará cualquier error.
+
+<ReadMore>Leer más sobre [verificación de tipos en Astro](/es/guides/typescript/#verificación-de-tipos).</ReadMore>
 
 ## `astro sync`
 
@@ -243,7 +229,9 @@ Este comando solo verifica los tipos dentro de los archivos `.astro`.
 Ejecutar `astro dev` o `astro build` ejecutará el comando `sync` también.
 :::
 
-Genera tipos de TypeScript para todos los módulos de Astro. Esto establece un [archivo `src/env.d.ts`](/es/guides/typescript/#configuración) para inferencia de tipos y define el módulo `astro:content` para la [API de colecciones de contenido](/es/guides/content-collections/).
+Genera tipos de TypeScript para todos los módulos de Astro. Esto establece un [archivo `src/env.d.ts`](/es/guides/typescript/#configuración) para inferencia de tipos y define los módulos para características que dependen de tipos generados:
+- El módulo `astro:content` para la [API de Colecciones de Contenido](/es/guides/content-collections/).
+- El módulo `astro:db` para [Astro DB](/es/guides/astro-db/).
 
 ## `astro add`
 
@@ -273,6 +261,44 @@ Adapter                  @astrojs/vercel/serverless
 Integrations             none
 ```
 
+## `astro preferences`
+
+Gestiona las preferencias de usuario con el comando `astro preferences`. Las preferencias de usuario son específicas para los usuarios individuales de Astro, a diferencia del archivo `astro.config.mjs` que cambia el comportamiento de todos los que trabajan en un proyecto.
+
+Por defecto, las preferencias del usuario se limitan al proyecto actual y se almacenan en un archivo local `.astro/settings.json`.
+
+Usando el indicador `--global`, las preferencias del usuario también se pueden aplicar a cada proyecto de Astro en la máquina actual. Las preferencias globales del usuario se almacenan en una ubicación específica del sistema operativo.
+
+Por ejemplo, para desactivar la devToolbar en un proyecto Astro específico:
+
+```shell
+astro preferences disable devToolbar
+```
+
+Para desactivar la devToolbar en todos los proyectos Astro en la máquina actual:
+
+```shell
+astro preferences disable --global devToolbar
+```
+
+La devToolbar se puede activar más tarde con:
+
+```shell
+astro preferences enable devToolbar
+```
+
+El comando `reset` restablece una preferencia a su valor por defecto:
+
+```shell
+astro preferences reset devToolbar
+```
+
+El comando `list` imprime la configuración actual de todas las preferencias de usuario configurables. También admite una salida `--json` legible por máquina.
+
+```shell
+astro preferences list
+```
+
 ## `astro telemetry`
 
 Establece la configuración de telemetría para el usuario de la CLI actual. La telemetría son datos anónimos que proporcionan información al equipo de Astro sobre qué características de Astro se utilizan con más frecuencia. Para obtener más información, consulta la [página de telemetría de Astro](https://astro.build/telemetry/).
@@ -289,14 +315,14 @@ La telemetría se puede volver a habilitar con:
 astro telemetry enable
 ```
 
-El comando `clear` restablece los datos de telemetría:
+El comando `reset` restablece los datos de telemetría:
 
 ```shell
-astro telemetry clear
+astro telemetry reset
 ```
 
 :::tip[¿Quieres deshabilitar la telemetría en entornos CI?]
-Asegúrate de agregar el comando `astro telemetry disabled` a tus scripts de CI.
+Asegúrate de agregar el comando `astro telemetry disabled` a tus scripts de CI o establezca la variable de entorno `ASTRO_TELEMETRY_DISABLED`.
 :::
 
 ## Banderas Comunes
@@ -335,6 +361,21 @@ Configura el valor de [`site`](/es/reference/configuration-reference/#site) para
 
 Configura el valor de [`base`](/es/reference/configuration-reference/#base) para tu proyecto. Usando este flag sobreescribirá el valor actual de `base` en tu archivo `astro.config.mjs`, si es que existe.
 
+#### `--port <number>`
+
+Especifica en qué puerto se ejecuta el servidor. El valor predeterminado es `4321`.
+
+#### `--host [dirección de host opcional]`
+
+Establece qué direcciones IP de red debe escuchar el servidor de desarrollo (es decir, direcciones IP que no son de localhost). Esto puede ser útil para probar tu proyecto en dispositivos locales tales como un teléfono durante el desarrollo.
+
+- `--host` - escucha todas las direcciones, incluidas LAN y direcciones públicas
+- `--host <dirección-personalizada>` - expone la dirección IP especificada en `<dirección-personalizada>`
+
+:::caution
+No uses la flag `--host` para exponer el servidor de desarrollo en un entorno de producción. El servidor de desarrollo está diseñado únicamente para uso local mientras desarrollas tu proyecto.
+:::
+
 ### `--verbose`
 
 Habilita el registro detallado, que es útil al debuggear un problema.
@@ -353,7 +394,7 @@ Imprime el número de versión de Astro y finaliza el proceso.
 
 ### `--open`
 
-Abre automáticamente la aplicación en el navegador al iniciar el servidor.
+Abre automáticamente la aplicación en el navegador al iniciar el servidor. Se le puede pasar un string de URL completo (p. ej. `--open http://example.com`) o una ruta (p. ej. `--open /about`) para especificar la URL a abrir.
 
 ### `--help`
 
@@ -484,3 +525,17 @@ const exitCode = await sync({
 
 process.exit(exitCode)
 ```
+
+## CLI de Astro Studio
+
+### `astro login`
+
+Autenticarse con Astro Studio. Esto es necesario para ejecutar todos los comandos de gestión de bases de datos, incluido [`astro link`](#astro-link).
+
+### `astro link`
+
+Enlaza tu base de datos alojada en Studio. Esto es necesario para ejecutar [comandos de Astro DB](/es/guides/integrations-guide/db/#referencia-de-la-cli-de-astro-db) para la gestión de bases de datos. Para enlazar una base de datos, se te pedirá que selecciones una base de datos existente o que crees una nueva.
+
+### `astro logout`
+
+Cierra la sesión de Astro Studio y elimina cualquier clave de autenticación almacenada localmente.

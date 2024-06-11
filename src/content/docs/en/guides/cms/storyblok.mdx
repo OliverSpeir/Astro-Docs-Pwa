@@ -6,7 +6,8 @@ service: Storyblok
 stub: false
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro'
+import { Steps } from '@astrojs/starlight/components';
+import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
 
 [Storyblok](https://www.storyblok.com/) is a component-based headless CMS that allows you to manage your content using reusable components called Bloks.
@@ -268,7 +269,7 @@ To connect your newly created Bloks to Astro components, create a new folder nam
 ```astro title="src/storyblok/Page.astro"
 ---
 import { storyblokEditable } from '@storyblok/astro'
-import StoryblokComponent from '@storyblok/astro/components/StoryblokComponent.astro';
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 const { blok } = Astro.props
 ---
 
@@ -396,7 +397,7 @@ To generate pages for all of your blog posts, create a `.astro` page that will c
 
 #### Static site generation
 
-If you are using Astro's default static site generation, you will use [dynamic routes](/en/core-concepts/routing/#dynamic-routes) and the `getStaticPaths` function to generate your project pages.
+If you are using Astro's default static site generation, you will use [dynamic routes](/en/guides/routing/#dynamic-routes) and the `getStaticPaths` function to generate your project pages.
 
 Create a new directory `src/pages/blog/` and add a new file called `[...slug].astro` with the following code:
 
@@ -508,21 +509,25 @@ If your project is using Astro's default static mode, you will need to set up a 
 
 To set up a webhook in Netlify:
 
+<Steps>
 1. Go to your site dashboard and click on **Build & deploy**. 
 
 2. Under the **Continuous Deployment** tab, find the **Build hooks** section and click on **Add build hook**. 
 
 3. Provide a name for your webhook and select the branch you want to trigger the build on. Click on **Save** and copy the generated URL.
+</Steps>
 
 ##### Vercel
 
 To set up a webhook in Vercel:
 
+<Steps>
 1. Go to your project dashboard and click on **Settings**. 
 
 2. Under the **Git** tab, find the **Deploy Hooks** section. 
 
 3. Provide a name for your webhook and the branch you want to trigger the build on. Click **Add** and copy the generated URL.
+</Steps>
 
 ##### Adding a webhook to Storyblok
 

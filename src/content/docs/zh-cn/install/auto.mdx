@@ -12,7 +12,7 @@ import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
 
 #### 前提准备
 
-- **Node.js** - `v18.14.1` 或更高版本。
+- **Node.js** - `v18.17.1` 或 `v20.3.0` 或更高版本。（不支持 `v19`。）
 - **文本编辑器** - 我们建议使用安装有 [Astro 官方扩展](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode)的 [VS Code](https://code.visualstudio.com/)。
 - **终端（Terminal）** - Astro 可以通过其命令行界面 (CLI) 访问。
 
@@ -49,7 +49,7 @@ import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
   </Fragment>
 </PackageManagerTabs>
 
-你可以在计算机上的任何位置运行 `create astro`，因此在开始之前无需为你的项目创建一个新的空目录。 如果你的新项目还没有空目录，该向导会帮你自动创建一个。
+你可以在计算机上的任何位置运行 `create astro`，因此你无需在开始之前为你的项目创建一个新的空目录。 如果你的新项目还没有空目录，该向导会帮你自动创建一个。
 
 如果一切顺利的话，在一些建议的后续步骤之后，你应该会看到 “Liftoff confirmed. Explore your project!” 。 `cd` 进入你的新项目目录以开始使用 Astro。
 
@@ -84,7 +84,7 @@ Astro 带有一个内置的开发服务器，拥有项目开发所需的一切�
 
 Astro 将实时监听 `src/` 目录中的文件更改，因此你在开发过程中进行更改时无需重新启动服务器。
 
-在浏览器中查看你的站点时，你可以访问 [Astro 开发者工具栏](/zh-cn/reference/configuration-reference/#开发工具栏选项)。在你进行构建时，它将帮助你检查你的[岛屿](/zh-cn/concepts/islands/)、发现无障碍性问题等等。
+在浏览器中查看你的站点时，你可以访问 [Astro 开发者工具栏](/zh-cn/guides/dev-toolbar/)。在你进行构建时，它将帮助你检查你的[群岛](/zh-cn/concepts/islands/)、发现无障碍性问题等等。
 
 如果你无法在浏览器中打开你的项目，请返回运行 `dev` 命令的终端并查看是否发生错误，或者检查你的项目的服务 URL 是否与​上方​链接的 URL 不同。
 
@@ -131,10 +131,24 @@ Astro 将实时监听 `src/` 目录中的文件更改，因此你在开发过程
 
 好了！你现在可以开始使用 Astro 进行构建了！ 🥳
 
-以下是我们建议接下来探索的几个主题。 你可以按任何顺序阅读它们。 你甚至可以暂时离开我们的文档，然后去玩你的新 Astro 项目代码库，遇到麻烦或有疑问时返回这里。
+以下是我们建议接下来探索的几个主题，你可以按任何顺序阅读它们。你甚至可以暂时离开我们的文档去玩转你的新 Astro 项目代码库，当你遇到麻烦或有疑问时，欢迎你随时返回这里。
 
-📚 **添加框架**：在我们的[集成指南](/zh-cn/guides/integrations-guide/)中学习如何使用 `npx astro add` 扩展 Astro 以支持 React、Svelte、Tailwind 等。
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
-📚 **部署你的网站**：在我们的[部署指南](/zh-cn/guides/deploy/)中了解如何构建 Astro 项目并将其部署到网络。
-
-📚 **了解你的代码库**：在我们的[项目结构指南](/zh-cn/core-concepts/project-structure/)中了解更多关于 Astro 项目结构的信息。
+<CardGrid>
+  <LinkCard
+    title="了解你的代码库"
+    description="在我们的项目结构指南中了解更多关于 Astro 项目结构的信息。"
+    href="/zh-cn/basics/project-structure/"
+  />
+  <LinkCard
+    title="添加框架"
+    description="在我们集成指南中学习如何扩展 Astro 以支持 React、Svelte、Tailwind 等。"
+    href="/zh-cn/guides/integrations-guide/"
+  />
+  <LinkCard
+    title="部署你的网站"
+    description="在我们的部署指南中了解如何构建 Astro 项目并将其部署到网络。"
+    href="/zh-cn/guides/deploy/"
+  />
+</CardGrid>

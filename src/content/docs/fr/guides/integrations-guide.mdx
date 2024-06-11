@@ -5,7 +5,7 @@ i18nReady: true
 
 import IntegrationsNav from '~/components/IntegrationsNav.astro';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-
+import { Steps } from '@astrojs/starlight/components'
 
 
 Les **intégrations Astro** permettent d'ajouter de nouvelles fonctionnalités et de nouveaux comportements à votre projet en quelques lignes de code. Vous pouvez écrire une intégration personnalisée vous-même, utiliser une intégration officielle ou utiliser des intégrations construites par la communauté.
@@ -110,6 +110,7 @@ Installez une intégration en utilisant un gestionnaire de paquet, puis mettez �
 
 Par exemple, pour installer l'intégration `@astrojs/sitemap` :
 
+<Steps>
 1. Installez l'intégration dans les dépendances de votre projet en utilisant votre gestionnaire de paquets préféré :
 
    <PackageManagerTabs>
@@ -144,6 +145,7 @@ Par exemple, pour installer l'intégration `@astrojs/sitemap` :
     ```
 
     Notez que les différentes intégrations peuvent avoir des paramètres de configuration différents. Lisez la documentation de chaque intégration, et appliquez toutes les options de configuration nécessaires à l'intégration choisie dans `astro.config.mjs`
+</Steps>
 
 ### Options personnalisées
 
@@ -231,7 +233,7 @@ Pour supprimer une intégration, désinstallez d'abord l'intégration de votre p
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm uninstall @astrojs/react
+  pnpm remove @astrojs/react
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -257,7 +259,7 @@ export default defineConfig({
 
 ## Trouver d'autres intégrations
 
-Vous trouverez de nombreuses intégrations développées par la communauté dans le [répertoire des intégrations d'Astro] (https://astro.build/integrations/). Suivez les liens pour obtenir des instructions détaillées d'utilisation et de configuration
+Vous trouverez de nombreuses intégrations développées par la communauté dans le [répertoire des intégrations d'Astro](https://astro.build/integrations/). Suivez les liens pour obtenir des instructions détaillées d'utilisation et de configuration
 
 ## Construire votre propre intégration
 

@@ -8,10 +8,11 @@ i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
 import Since from '~/components/Since.astro';
+import ReadMore from '~/components/ReadMore.astro'
 
-此适配器允许 Astro 将你的[`hybrid` 或 `server` 渲染站点](/zh-cn/core-concepts/rendering-modes/#按需渲染) 部署到[Vercel](https://www.vercel.com/)。
+此适配器允许 Astro 将你的[`hybrid` 或 `server` 渲染站点](/zh-cn/basics/rendering-modes/#按需渲染) 部署到[Vercel](https://www.vercel.com/)。
 
-如果你使用 Astro 作为[静态站点生成器](/zh-cn/core-concepts/rendering-modes/#预渲染)，则不需要适配器。
+如果你使用 Astro 作为 [`静态` 站点生成器](/zh-cn/basics/rendering-modes/#预渲染)，只有当你使用额外的 Vercel 服务时（例如 [Vercel 网络分析](https://vercel.com/docs/analytics)，[Vercel 图像优化](https://vercel.com/docs/image-optimization)），你才需要这个适配器。否则，你不需要适配器来部署你的 `静态` 站点。
 
 在我们的 [Vercel 部署指南](/zh-cn/guides/deploy/vercel/) 中学习和部署你的 Astro 站点。
 
@@ -65,7 +66,7 @@ Astro 包含了一个 `astro add` 命令，用于自动设置官方集成。如�
   </Fragment>
 </PackageManagerTabs>
 
-然后，将适配器和你想要的[按需渲染模式](/zh-cn/core-concepts/rendering-modes/#按需渲染)添加到你的 `astro.config.*` 文件中：
+然后，将适配器和你想要的[按需渲染模式](/zh-cn/basics/rendering-modes/#按需渲染)添加到你的 `astro.config.*` 文件中：
 
 ```js title="astro.config.mjs" ins={2, 6-7}
 import { defineConfig } from 'astro/config';
@@ -94,7 +95,7 @@ import vercel from '@astrojs/vercel/static';
 
 ## 用法
 
-📚 **[在这里阅读完整的部署指南。](/zh-cn/guides/deploy/vercel/)**
+<ReadMore>了解更多关于 [将项目部署到 Vercel](/zh-cn/guides/deploy/vercel/) 的信息。</ReadMore>
 
 你可以通过 CLI ( `vercel deploy` ) 或者通过 [Vercel 控制台](https://vercel.com/) 连接到你的新仓库进行部署。或者，你可以在本地创建生产版本构建：
 
@@ -107,7 +108,7 @@ vercel deploy --prebuilt
 
 要配置这个适配器，将一个对象传递给 `astro.config.mjs` 中的 `vercel()` 函数调用：
 
-### Web Analytics
+### `webAnalytics`
 
 **类型：** `VercelWebAnalyticsConfig`<br/>
 **适用于：** Serverless, Static<br/>
@@ -130,7 +131,7 @@ export default defineConfig({
 });
 ```
 
-### imagesConfig
+### `imagesConfig`
 
 **类型：** `VercelImageConfig`<br/>
 **适用于：** Serverless, Static<br/>
@@ -155,7 +156,7 @@ export default defineConfig({
 });
 ```
 
-### imageService
+### `imageService`
 
 **类型：** `boolean`<br/>
 **适用于：** Serverless, Static<br/>
@@ -196,12 +197,12 @@ import astroLogo from '../assets/logo.png';
 />
 ```
 
-### devImageService
+### `devImageService`
 
 **类型：** `'sharp' | 'squoosh' | string`<br/>
 **适用于：** Serverless, Static
 <Since v="3.8.0" pkg="@astrojs/vercel" />
-**默认值：** 'sharp'
+**默认值：** `sharp`
 
 当 [imageService](#imageservice) 启用时，允许你在开发中配置使用哪个图像服务。如果你无法在开发机器上安装 Sharp 的依赖项，但使用另一个图像服务（如 Squoosh）可以让你在开发环境中预览图像，这可能很有用。但构建不会受其影响，将始终使用 Vercel 的图像优化。
 
@@ -221,7 +222,78 @@ export default defineConfig({
 });
 ```
 
-### includeFiles
+### `isr`
+
+**类型：** <code>boolean |   VercelISRConfig</code><br/>
+**适用于：** Serverless
+<Since v="7.2.0" pkg="@astrojs/vercel" />
+**默认值：** `false`
+
+允许你的项目作为一个 [ISR (增量式静态再生)](https://vercel.com/docs/incremental-static-regeneration) 功能部署，这个功能以首次请求后预渲染页面相同的方式缓存你按需渲染的页面。
+
+要启用此功能，在你的 `astro.config.mjs` 中的 Vercel 适配器配置里将 `isr` 设置为 true：
+
+```js title="astro.config.mjs" ins={8}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
+
+export default defineConfig({
+  // ...
+  output: 'server',
+  adapter: vercel({
+    isr: true,
+  }),
+});
+```
+
+请注意，ISR 功能请求不包括搜索参数，这与静态模式下的 [请求](/zh-cn/reference/api-reference/#astrorequest) 类似。
+
+#### ISR 缓存失效
+
+默认情况下，ISR 函数会在你的部署期间进行缓存。你可以通过设置过期时间，或者完全排除特定路由不进行缓存，来进一步控制缓存。
+
+##### 基于时间的失效
+
+你可以通过配置秒为单位的 `expiration` 值来改变缓存路由的时间长度：
+
+```js title="astro.config.mjs" {8-11}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
+
+export default defineConfig({
+  // ...
+  output: 'server',
+  adapter: vercel({
+    isr: {
+      // 在首次请求时缓存所有页面，并保存 1 天
+      expiration: 60 * 60 * 24,
+    },
+  }),
+});
+```
+
+##### 从缓存中排除路径
+
+要实现 Vercel 的[草稿模式](https://vercel.com/docs/build-output-api/v3/features#draft-mode)或[按需增量式静态再生 (ISR)](https://vercel.com/docs/build-output-api/v3/features#on-demand-incremental-static-regeneration-isr)，你可以创建一个绕过令牌，并将其连同任何要从缓存中排除的路由一起提供给 `isr` 配置：
+
+```js title="astro.config.mjs" {7-12}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
+
+export default defineConfig({
+    output: "server",
+    adapter: vercel({
+        isr: {
+            // 你创建的一个秘密随机字符串。
+            bypassToken: "005556d774a8",
+            // 总是提供最新内容的路径。
+            exclude: [ "/api/invalidate", "/posts/[...slug]" ]
+        }
+    })
+})
+```
+
+### `includeFiles`
 
 **类型：** `string[]`<br/>
 **适用于：** Serverless
@@ -241,7 +313,7 @@ export default defineConfig({
 });
 ```
 
-### excludeFiles
+### `excludeFiles`
 
 **类型：** `string[]`<br/>
 **适用于：** Serverless
@@ -261,12 +333,12 @@ export default defineConfig({
 });
 ```
 
-### maxDuration
+### `maxDuration`
 
 **类型：** `number`<br/>
 **适用于：** Serverless
 
-使用这个属性来延长或限制无服务器函数运行的最长持续时间（以秒为单位），直到超时。请参阅 [Vercel 文档](https://vercel.com/docs/functions/serverless-functions/runtimes#maxduration) 获取你的账户计划的默认和最大时限。
+使用这个属性来延长或限制无服务器函数运行的最长持续时间（以秒为单位），直到超时。请参阅 [Vercel 文档](https://vercel.com/docs/functions/serverless-functions/runtimes#maxduration) 获取你的账号计划的默认和最大时限。
 
 ```js title="astro.config.mjs" ins={8}
 import { defineConfig } from 'astro/config';
@@ -276,7 +348,28 @@ export default defineConfig({
 // ...
   output: "server",
   adapter: vercel({
-      maxDuration: 60
+    maxDuration: 60
+  }),
+});
+```
+
+### `skewProtection`
+
+**类型：** `boolean`<br/>
+**适用于：** Serverless
+<Since pkg="@astrojs/vercel" v="7.6.0" />
+
+使用此属性启用 [Vercel Skew protection](https://vercel.com/docs/deployments/skew-protection)（适用于 Vercel Pro 和企业账户）。
+
+```js title="astro.config.mjs" ins={8}
+import { defineConfig } from 'astro/config';
+import vercel from '@astrojs/vercel/serverless';
+
+export default defineConfig({
+// ...
+  output: "server",
+  adapter: vercel({
+    skewProtection: true
   }),
 });
 ```
@@ -302,39 +395,13 @@ export default defineConfig({
 });
 ```
 
-### Vercel Edge 中间件
+### 在 Vercel Edge 函数上运行 Astro 中间件
 
-你可以使用 Vercel Edge 中间件在发送响应之前拦截请求并重定向。Vercel 中间件可以用于 Edge、SSR 和静态部署。你可能不需要安装此软件包来使用中间件。`@vercel/edge` 仅在使用某些中间件功能（例如地理位置）时需要。更多信息请参阅 [Vercel 的中间件文档](https://vercel.com/docs/concepts/functions/edge-middleware).
+`@astrojs/vercel/serverless` 适配器可以根据你代码库中的 Astro 中间件创建一个 [边缘函数](https://vercel.com/docs/functions/edge-functions)。当启用 `edgeMiddleware` 时，边缘函数将为包括静态资源、预渲染页面和按需渲染页面在内的所有请求执行你的中间件代码。
 
-1. 在你的项目根目录添加一个 `middleware.js` 文件：
+对于按需渲染的页面，`context.locals` 对象会被 JSON 序列化并通过标头发送给无服务器函数，由该函数执行渲染。作为安全措施，除非请求来自生成的边缘函数，否则无服务器函数将拒绝服务，并返回 `403 Forbidden` 响应。
 
-  ```js title="middleware.js"
-  export const config = {
-    // 仅在 admin 路由上运行中间件
-    matcher: '/admin',
-  };
-
-  export default function middleware(request) {
-    const url = new URL(request.url);
-    // 可以在这里获取 IP 位置或 cookie。
-    if (url.pathname === '/admin') {
-      url.pathname = '/';
-    }
-    return Response.redirect(url);
-  }
-  ```
-
-2. 在本地开发时，你可以运行 `vercel dev` 来运行中间件。在生产中，Vercel 会自动处理这个。
-
-:::caution
-**尝试重写？** 目前，使用中间件重写请求仅适用于静态文件。
-:::
-
-### 通过 Astro 中间件创建 Vercel Edge 中间件
-
-`@astrojs/vercel/serverless` 适配器可以根据你代码库中的 Astro 中间件自动创建 Vercel Edge 中间件。
-
-这是一个选择性功能，需要将 `edgeMiddleware` 选项设置为 `true` ：
+这是一个选择性功能。要启用它，请将 `edgeMiddleware` 设置为 `true`：
 
 ```js title="astro.config.mjs" "edgeMiddleware: true"
 import { defineConfig } from 'astro/config';
@@ -348,56 +415,20 @@ export default defineConfig({
   }),
 });
 ```
+边缘中间件可以用 `ctx.locals.vercel.edge` 访问 Vercel 的 [`RequestContext`](https://vercel.com/docs/functions/edge-middleware/middleware-api#requestcontext) 。如果你正在使用 TypeScript，可以通过更新 `src/env.d.ts` 来使用 `EdgeLocals` 获得正确的类型定义：
 
-可选的，你可以在 [`src文件夹`](/zh-cn/reference/configuration-reference/#srcdir) 中创建一个被适配器识别的文件，名为 `vercel-edge-middleware.(js|ts)` ，以创建 [`Astro.locals`](/zh-cn/reference/api-reference/#astrolocals) 。
+```ts
+/// <reference path="../.astro/types.d.ts" />
+/// <reference types="astro/client" />
 
-Typings 需要 [`@vercel/edge`](https://www.npmjs.com/package/@vercel/edge) 包。
+type EdgeLocals = import('@astrojs/vercel').EdgeLocals
 
-```js title="src/vercel-edge-middleware.js"
-/**
- *
- * @param options.request {Request}
- * @param options.context {import("@vercel/edge").RequestContext}
- * @returns {object}
- */
-export default function ({ request, context }) {
-  // 在这里处理 request 和 context
-  return {
-    title: "Spider-man's blog",
-  };
+declare namespace App {
+  interface Locals extends EdgeLocals {
+    // ...
+  }
 }
 ```
-
-如果你使用 TypeScript，可以将函数类型化如下：
-
-```ts title="src/vercel-edge-middleware.ts"
-import type { RequestContext } from '@vercel/edge';
-
-export default function ({ request, context }: { request: Request; context: RequestContext }) {
-  // 在这里处理 request 和 context
-  return {
-    title: "Spider-man's blog",
-  };
-}
-```
-
-这个函数返回的数据将传递给 Astro 中间件。
-
-函数：
-
-* 必须导出一个 **default** 函数；
-* 必须 **return** 一个 `object` ；
-* 接受一个具有 `request` 和 `context` 属性的对象；
-* `request` 的类型为 [`Request`](https://developer.mozilla.org/zh-CN/docs/Web/API/Request);
-* `context` 的类型为 [`RequestContext`](https://vercel.com/docs/concepts/functions/edge-functions/vercel-edge-package#requestcontext);
-
-#### 限制和约束
-
-当你选择此功能时，需要注意一些限制：
-
-* Vercel Edge 中间件将始终是**第一个**接收 `Request` 的函数，并且是接收 `Response` 的最后一个函数。这是一种遵循 [Vercel 设定的边界](https://vercel.com/docs/concepts/functions/edge-middleware)的结构性约束。
-* 仅使用 `request` 和 `context` 来生成一个 `Astro.locals` 对象。像重定向等操作应该委托给 Astro 中间件。
-* `Astro.locals` **必须是可序列化的**。不这样做将导致 **运行时错误**. 这意味着你 **不能** 存储复杂类型比如 `Map`、 `function`、 `Set` 等
 
 ### Node.js 版本支持
 `@astrojs/vercel` 适配器支持特定的 Node.js 版本，用于在 Vercel 上部署 Astro 项目。要在 Vercel 上查看受支持的 Node.js 版本，请单击项目的设置选项卡，然后向下滚动到 “Node.js版本” 部分。

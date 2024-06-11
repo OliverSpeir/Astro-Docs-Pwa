@@ -4,18 +4,19 @@ description: 'NPM, PNPM, Yarn을 사용하여 Astro를 수동으로 설치하기
 i18nReady: true
 ---
 import Button from '~/components/Button.astro';
-import FileTree from '~/components/FileTree.astro';
+import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
+import ReadMore from '~/components/ReadMore.astro'
 
-[자동 CLI 도구](/ko/install/auto/)를 사용하는 것을 선호하지 않는다면, 이 가이드에 따라 수동으로 설치하고 구성하여 새 Astro 프로젝트를 시작할 수 있습니다.
+이 가이드는 새로운 Astro 프로젝트를 수동으로 설치하고 구성하는 단계를 안내합니다.
 
-#### 더 빠르게 시작하는 방법을 원하시나요?
-
-<Button href="/ko/install/auto/">create astro CLI 마법사를 사용해 보세요 →</Button>
+:::tip[더 빠르게 시작하는 방법을 원하시나요?]
+대신 [astro CLI 마법사 생성하기](/ko/install/auto/)를 따르세요.
+:::
 
 #### 요구 사항
 
-- **Node.js** - `v18.14.1` 또는 상위 버전.
+- **Node.js** - `v18.17.1` 또는 `v20.3.0` 또는 상위 버전. ( `v19`는 지원되지 않음.)
 - **텍스트 편집기** - [VS Code](https://code.visualstudio.com/)와 [공식 Astro 확장 프로그램](https://marketplace.visualstudio.com/items?itemName=astro-build.astro-vscode)을 함께 사용하는 것이 권장됩니다.
 - **터미널** - Astro를 제어할 명령줄 인터페이스(CLI)가 필요합니다.
 
@@ -69,7 +70,7 @@ Astro는 전역이 아닌 로컬에 설치되어야 합니다. 실수로 `npm in
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm install astro 
+  pnpm add astro
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -147,9 +148,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({});
 ```
 
-프로젝트에 React, Svelte 등과 같은 [UI 프레임워크 컴포넌트](/ko/core-concepts/framework-components/)를 포함하거나 Tailwind 또는 Partytown과 같은 다른 도구를 사용하려는 경우 이 파일에서 [직접 통합을 가져오고 구성](/ko/guides/integrations-guide/)할 수 있습니다.
+프로젝트에 React, Svelte 등과 같은 [UI 프레임워크 컴포넌트](/ko/guides/framework-components/)를 포함하거나 Tailwind 또는 Partytown과 같은 다른 도구를 사용하려는 경우 이 파일에서 [직접 통합을 가져오고 구성](/ko/guides/integrations-guide/)할 수 있습니다.
 
-📚 자세한 내용은 Astro의 [API 구성 참조](/ko/reference/configuration-reference/)를 확인하세요.
+<ReadMore>자세한 내용은 Astro의 [API 구성 참조](/ko/reference/configuration-reference/)를 확인하세요.</ReadMore>
 
 ## 6. TypeScript 지원 추가
 
@@ -171,7 +172,7 @@ TypeScript 코드를 작성하려는 경우, Astro의 `strict` 또는 `strictest
 /// <reference types="astro/client" />
 ```
 
-📚 자세한 내용은 [TypeScript 설정 가이드](/ko/guides/typescript/#설정)를 참조하세요.
+<ReadMore>자세한 내용은 [TypeScript 설정 가이드](/ko/guides/typescript/#설정)를 참조하세요.</ReadMore>
 
 ## 7. 다음 단계
 

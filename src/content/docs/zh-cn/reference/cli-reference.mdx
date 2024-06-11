@@ -4,6 +4,7 @@ title: CLI 命令
 
 import Since from '~/components/Since.astro';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import ReadMore from '~/components/ReadMore.astro'
 
 你可以使用 Astro 提供的命令行界面 (CLI) 从终端窗口开发、构建和预览你的项目。
 
@@ -173,7 +174,31 @@ Global Flags
 
 该命令将监听你项目中的任何更改，并报告任何错误。
 
-📚 阅读更多关于 [在 Astro 中类型检查](/zh-cn/guides/typescript/) 的信息。
+#### `--root <path-to-dir>`
+
+指定一个不同的根目录进行检查。默认使用当前工作目录。
+
+#### `--tsconfig <path-to-file>`
+
+指定手动使用的 `tsconfig.json` 或 `jsconfig.json` 文件。如果未提供，Astro 将尝试找到配置，或自动推断项目的配置。
+
+#### `--minimumFailingSeverity <error|warning|hint>`
+
+指定退出并返回错误代码所需的最低严重性级别。默认为 `error`。
+
+例如，运行 `astro check --minimumFailingSeverity warning` 会在检测到任何警告时使命令退出并报错。
+
+#### `--minimumSeverity <error|warning|hint>`
+
+指定要输出的最低严重性级别。默认为 `hint`。
+
+例如，运行 `astro check --minimumSeverity warning` 将显示错误和警告，但不显示提示。
+
+#### `--preserveWatchOutput`
+
+指定在监听模式下，不清除检查之间的输出。
+
+<ReadMore>阅读更多关于 [在 Astro 中类型检查](/zh-cn/guides/typescript/) 的信息。</ReadMore>
 
 ## `astro sync`
 
@@ -183,7 +208,10 @@ Global Flags
 运行 `astro dev`，`astro build`或者`astro check`也会运行`sync`命令。
 :::
 
-为所有 Astro 模块生成 TypeScript 类型。这会为类型推断设置一个[`src/env.d.ts`文件](/zh-cn/guides/typescript/#设置)，并为 [内容集合 API](/zh-cn/guides/content-collections/) 定义 `astro:content` 模块。
+为所有 Astro 模块生成 TypeScript 类型。这会为类型推断设置一个[`src/env.d.ts`文件](/zh-cn/guides/typescript/#设置)，并为依赖于生成类型的特性定义模块：
+
+- `astro:content` 模块用于 [内容集合 API](/zh-cn/guides/content-collections/)。
+- `astro:db` 模块用于 [Astro DB](/zh-cn/guides/astro-db/)。
 
 ## `astro add`
 
@@ -219,6 +247,26 @@ Integrations             none
 默认情况下，用户偏好是针对当前项目的，存储在本地的 `.astro/settings.json` 文件中。
 
 使用 `--global` 标志，用户偏好也可以应用于当前机器上的每个 Astro 项目。全局用户偏好存储在特定于操作系统的位置。
+
+<h3> 可配置的偏好设置 </h3>
+
+- `devToolbar` — 在浏览器中启用或禁用开发工具栏。（默认值：`true`）
+- `checkUpdates` — 启用或禁用 Astro CLI 的自动更新检查。（默认值：`true`）
+
+`list` 命令打印所有可配置用户偏好的当前设置。它还支持机器可读的 `--json` 输出格式。
+
+```shell
+astro preferences list
+```
+
+终端输出示例：
+
+| Preference               | Value |
+| ------------------------ | ----- |
+| devToolbar.enabled       | true  <tr></tr>|
+| checkUpdates.enabled     | true  |
+
+你可以通过 `enable`、`disable` 或 `reset` 命令来启用、禁用或重置偏好设置至默认值。
 
 举个例子，要在特定的 Astro 项目中禁用 devToolbar：
 
@@ -346,7 +394,7 @@ astro --config config/astro.config.mjs dev
 
 ### `--open`
 
-在服务器启动时自动在浏览器中打开应用程序。可以传递完整的 URL 字符串(例如 `--open http://example.com`)或路径名(例如 `--open /about`)来指定要打开的 URL。
+在服务器启动时自动在浏览器中打开应用程序。可以传递完整的 URL 字符串 (例如 `--open http://example.com`) 或路径名 (例如 `--open /about`) 来指定要打开的 URL。
 
 ### `--help`
 
@@ -478,3 +526,17 @@ const exitCode = await sync({
 
 process.exit(exitCode)
 ```
+
+## Astro Studio CLI
+
+### `astro login`
+
+通过 Astro Studio 进行身份验证。这对于运行所有数据库管理命令（包括 [`astro link`](#astro-link)）是必需的。
+
+### `astro link`
+
+连接到你的 Studio 托管数据库。这对于运行用于数据库管理的 [Astro DB 命令](/zh-cn/guides/integrations-guide/db/#astro-db-cli-参考)是必需的。要连接一个数据库，你会被提示选择一个已存在的数据库或创建一个新的。
+
+### `astro logout`
+
+登出 Astro Studio 并移除任何本地存储的身份验证密钥。

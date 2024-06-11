@@ -9,6 +9,7 @@ import Box from '~/components/tutorial/Box.astro';
 import MultipleChoice from '~/components/tutorial/MultipleChoice.astro';
 import PreCheck from '~/components/tutorial/PreCheck.astro';
 import Option from '~/components/tutorial/Option.astro';
+import { Steps } from '@astrojs/starlight/components';
 
 Las **colecciones de contenido** son una forma poderosa de gestionar grupos de contenido similar, como lo son las publicaciones de un blog. Las colecciones ayudan a organizar tus documentos, validar el contenido de los archivos YAML y proveen seguridad de tipos con TypeScript automáticamente para todo tu contenido (incluso si no escribes nada de TypeScript por tu cuenta).
 
@@ -30,9 +31,9 @@ Nosotros recomendamos usar nuestro proyecto de ejemplo para terminar este tutori
 
 ## Código de Construir un Blog
 
-En el [tutorial introductorio de Crear un Blog](/es/tutorial/0-introduction/), aprendiste acerca del [sistema de rutas basado en archivos](/es/core-concepts/routing/#rutas-estáticas): cualquier archivo `.astro`, `.md`, o `.mdx` dentro del directorio `src/pages/` se convertirá automáticamente en una página en tu sitio.
+En el [tutorial introductorio de Crear un Blog](/es/tutorial/0-introduction/), aprendiste acerca del [sistema de rutas basado en archivos](/es/guides/routing/#rutas-estáticas): cualquier archivo `.astro`, `.md`, o `.mdx` dentro del directorio `src/pages/` se convertirá automáticamente en una página en tu sitio.
 
-Para crear tu primera publicación `https://example.com/posts/post-1/`, creaste el directorio `/posts/` y agregaste el archivo `post-1.md`. Después, agregaste un archivo Markdown en este directorio cada que querías agregar un nuevo publicación en tu blog.
+Para crear tu primera publicación `https://example.com/posts/post-1/`, creaste el directorio `/posts/` y agregaste el archivo `post-1.md`. Después, agregaste un archivo Markdown en este directorio cada vez que querías agregar una nueva publicación en tu blog.
 
 ## Páginas vs Colecciones
 
@@ -94,6 +95,7 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
 
 ### Actualiza las dependencias
 
+<Steps>
 1. Actualiza a la última versión de Astro y actualiza todas las integraciones a sus últimas versiones ejecutando los siguiente comandos en tu terminal:
 
     <PackageManagerTabs>
@@ -144,9 +146,11 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
       }
     }
     ```
+</Steps>
 
 ### Crear una colección para tus publicaciones del blog.
 
+<Steps>
 3. Crea una nueva **colección** (directorio) llamado `src/content/posts/`.
 
 4. Mueve todas las publicaciones de tu blog (archivos `.md`) de `src/pages/posts/` en esta nueva colección.
@@ -177,11 +181,15 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     };
     ```
 
+6. Para que astro reconozca tu esquema, abandona el servidor de desarrollo (`CTRL + C`) y ejecuta el siguiente comando [`npx astro sync`](/es/reference/cli-reference/#astro-sync). Esto definirá el módulo `astro:content` para la API de Colecciones de Contenido. Reinicia el servidor de desarrollo para continuar con el tutorial. 
+</Steps>
+
 ### Generando las páginas de una colección
 
-6. Crea un archivo de página llamado `src/pages/posts/[...slug].astro`. Los archivos Markdown y MDX no se convertirán en páginas automáticamente usando el sistema de rutas basado en archivos cuando estos viven en una colección, por eso debes crear una página encargada de generar un blog individual para cada publicación.
+<Steps>
+7. Crea un archivo de página llamado `src/pages/posts/[...slug].astro`. Los archivos Markdown y MDX no se convertirán en páginas automáticamente usando el sistema de rutas basado en archivos cuando estos viven en una colección, por eso debes crear una página encargada de generar un blog individual para cada publicación.
 
-7. Agrega el siguiente código para [consultar tu colección](/es/guides/content-collections/#consultando-colecciones), para hacer que el slug y el contenido de cada publicación del blog estén disponibles para cada página que se genere:
+8. Agrega el siguiente código para [consultar tu colección](/es/guides/content-collections/#consultando-colecciones), para hacer que el slug y el contenido de cada publicación del blog estén disponibles para cada página que se genere:
 
     ```astro title="src/pages/posts/[...slug].astro"
     ---
@@ -200,7 +208,7 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     ---
     ```
 
-8. La etiqueta `<Content />` renderiza tu publicación con el `layout` para archivos Markdown. Esto te permite especificar una plantilla común para todas tus publicaciones.
+9. La etiqueta `<Content />` renderiza tu publicación con el `layout` para archivos Markdown. Esto te permite especificar una plantilla común para todas tus publicaciones.
 
     ```astro title="src/pages/posts/[...slug].astro" ins={15-17}
     ---
@@ -222,7 +230,7 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     </MarkdownPostLayout>
     ```
 
-9. Elimina la definición de `layout` del frontmatter de cada publicación. Ahora, tu contenido está envuelto en un layout al renderizarse, y esta propiedad ya no es necesaria.
+10. Elimina la definición de `layout` del frontmatter de cada publicación. Ahora, tu contenido está envuelto en un layout al renderizarse, y esta propiedad ya no es necesaria.
 
     ```md title="src/content/posts/post-1.md" del={2}
     ---
@@ -232,10 +240,12 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     ...
     ---
     ```
+</Steps>
 
 ### Reemplaza `Astro.glob()` con `getCollection()`
 
-10. En cualquier lugar donde tengas una lista de publicaciones de blog, como la página de blog del tutorial (`src/pages/blog.astro/`), deberás reemplazar `Astro.glob()` con [`getCollection()`](/es/reference/api-reference/#getcollection) como la forma de obtener contenido y metadatos de tus archivos Markdown.
+<Steps>
+11. En cualquier lugar donde tengas una lista de publicaciones de blog, como la página de blog del tutorial (`src/pages/blog.astro/`), deberás reemplazar `Astro.glob()` con [`getCollection()`](/es/reference/api-reference/#getcollection) como la forma de obtener contenido y metadatos de tus archivos Markdown.
 
       ```astro title="src/pages/blog.astro" "post.data" "getCollection(\"posts\")" "/posts/${post.slug}/" del={7} ins={2,8}
     ---
@@ -248,7 +258,7 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     const allPosts = await getCollection("posts");
     ---
 
-11. También necesitarás actualizar las referencias de los datos regresados por cada `post`. Ahora encontrarás los valores de frontmatter en la propiedad `data` de cada objeto. Adicional a esto, cuando utilizas colecciones, cada objeto `post` tendrá un `slug` por página, no una URL completa.
+12. También necesitarás actualizar las referencias de los datos regresados por cada `post`. Ahora encontrarás los valores de frontmatter en la propiedad `data` de cada objeto. Adicional a esto, cuando utilizas colecciones, cada objeto `post` tendrá un `slug` por página, no una URL completa.
 
     ```astro title="src/pages/blog.astro" "data" "/posts/$\{post.slug\}/" del={14} ins={15}
     ---
@@ -272,7 +282,7 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
     </BaseLayout> 
     ```
 
-12. El tutorial del proyecto de blog también genera dinámicamente una página para cada etiqueta `src/pages/tags/[tag].astro` y muestra una lista de etiquetas `src/pages/tags/index.astro`. 
+13. El tutorial del proyecto de blog también genera dinámicamente una página para cada etiqueta `src/pages/tags/[tag].astro` y muestra una lista de etiquetas `src/pages/tags/index.astro`. 
    
           Aplica los mismos cambios de arriba a los siguientes dos archivos:
       
@@ -308,10 +318,10 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
         ---
 
         <BaseLayout pageTitle={tag}>
-            <p>Artículos con la etiqueta {tag}</p>
-            <ul>
-                { posts.map((post) => <BlogPost url={`/posts/${post.slug}/`} title={post.data.title} />) }
-            </ul>
+          <p>Artículos con la etiqueta {tag}</p>
+          <ul>
+            { posts.map((post) => <BlogPost url={`/posts/${post.slug}/`} title={post.data.title} />) }
+          </ul>            
         </BaseLayout>
         ```
 
@@ -334,10 +344,12 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
           ```
           </details>
       </Box>
+</Steps>
 
 ### Actualiza cualquier valor del frontmatter para que coincida con tu esquema
 
-13. Si es necesario, actualiza los valores del frontmatter que no coincidan con el esquema de tu colección en todo tu proyecto, al igual que en tu plantilla o `layout`.
+<Steps>
+14. Si es necesario, actualiza los valores del frontmatter que no coincidan con el esquema de tu colección en todo tu proyecto, al igual que en tu plantilla o `layout`.
 
     En el ejemplo tutorial de blog, `pubDate` era una cadena de texto. Ahora, con el nuevo esquema definido para frontmatter, `pubDate` será un objeto de tipo `Date`.
     
@@ -352,10 +364,12 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
       <img src={frontmatter.image.url} width="300" alt={frontmatter.image.alt} />
     ...
     ```
+</Steps>
 
 ### Actualiza la función RSS
 
-14. Finalmente, el tutorial de blog incluye el feed RSS. Esta función también debe utilizar `getCollection()` para regresar la información de tus publicaciones. También deberás generar los artículos utilizando la propiedad `data`.
+<Steps>
+15. Finalmente, el tutorial de blog incluye el feed RSS. Esta función también debe utilizar `getCollection()` para regresar la información de tus publicaciones. También deberás generar los artículos utilizando la propiedad `data`.
 
     ```js title="src/pages/rss.xml.js" del={2,11} ins={3,6,12-17}
     import rss from '@astrojs/rss';
@@ -379,5 +393,6 @@ Los siguientes pasos mostrarán cómo extender el resultado del tutorial Crear u
       })
     }
     ```
+</Steps>
 
 Para ver el ejemplo completo del tutorial usando colecciones de contenido, [consulta la rama de Colecciones de Contenido](https://github.com/withastro/blog-tutorial-demo/tree/content-collections) del repositorio del tutorial.

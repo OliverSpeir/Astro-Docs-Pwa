@@ -11,6 +11,7 @@ import Box from '~/components/tutorial/Box.astro';
 import MultipleChoice from '~/components/tutorial/MultipleChoice.astro';
 import Option from '~/components/tutorial/Option.astro';
 import PreCheck from '~/components/tutorial/PreCheck.astro';
+import { Steps } from '@astrojs/starlight/components';
 
 <PreCheck>
   - Astro 웹 사이트를 구축하는 데 사용할 도구를 설치하십시오.
@@ -26,7 +27,7 @@ import PreCheck from '~/components/tutorial/PreCheck.astro';
 
 ### Node.js
 
-Astro를 시스템에서 실행하려면 [**Node.js**](https://nodejs.org/en/) 버전 `v18.14.1` 이상이 설치되어 있어야 합니다.
+Astro를 시스템에서 실행하려면 [**Node.js**](https://nodejs.org/en/) 버전 `v18.17.1` 또는 `v20.3.0` 이상이 설치되어 있어야 합니다. (`v19`는 지원되지 않습니다.)
 
 호환되는 버전이 이미 설치되어 있는지 확인하려면 터미널에서 다음 명령을 실행하세요.
 
@@ -34,12 +35,12 @@ Astro를 시스템에서 실행하려면 [**Node.js**](https://nodejs.org/en/) �
 node -v
 
 // 예시 출력
-v18.14.1
+v18.17.1
 ```
 
-명령이 `v18.14.1`보다 높은 버전 번호를 반환하면 문제가 없습니다!
+명령이 `v18.17.1` 또는 `v20.3.0` (`v19` 제외)보다 높은 버전 번호를 반환하면 문제가 없습니다!
 
-명령이 `Command 'node' not found` 같은 오류 메시지를 반환하거나 `v18.14.1`보다 낮은 버전 번호를 반환하는 경우 호환되는 Node.js 버전을 설치해야 합니다.
+명령이 `Command 'node' not found` 같은 오류 메시지를 반환하거나 요구사항보다 낮은 버전 번호를 반환하는 경우 호환되는 Node.js 버전을 설치해야 합니다.
 
 ### 코드 편집기
 
@@ -49,7 +50,9 @@ v18.14.1
 이 튜토리얼에서는 **VS Code**를 사용하지만 운영 체제에 맞는 모든 편집기를 사용할 수 있습니다.
 :::
 
+<Steps>
 1. [VS Code](https://code.visualstudio.com/#alt-downloads) 또는 원하는 다른 코드 편집기를 다운로드하여 설치합니다.
+</Steps>
 
 <Box icon="question-mark">
 

@@ -4,6 +4,7 @@ i18nReady: true
 ---
 
 import Since from '~/components/Since.astro';
+import ReadMore from '~/components/ReadMore.astro'
 
 **Template directives** are a special kind of HTML attribute available inside of any Astro component template (`.astro` files), and some can also be used in `.mdx` files.
 
@@ -106,11 +107,11 @@ This is most helpful when using `fetch()`. For example, fetching old posts from 
 This is equivalent to just passing a variable into a template expression directly (ex: `<div>{someText}</div>`) and therefore this directive is not commonly used.
 ## Client Directives
 
-These directives control how [UI Framework components](/en/core-concepts/framework-components/) are hydrated on the page.
+These directives control how [UI Framework components](/en/guides/framework-components/) are hydrated on the page.
 
 By default, a UI Framework component is not hydrated in the client. If no `client:*` directive is provided, its HTML is rendered onto the page without JavaScript.
 
-A client directive can only be used on a UI framework component that is directly imported into a `.astro` component.  Hydration directives are not supported when using [dynamic tags](/en/core-concepts/astro-syntax/#dynamic-tags) and [custom components passed via the `components` prop](/en/guides/markdown-content/#custom-components-with-imported-mdx).
+A client directive can only be used on a UI framework component that is directly imported into a `.astro` component.  Hydration directives are not supported when using [dynamic tags](/en/basics/astro-syntax/#dynamic-tags) and [custom components passed via the `components` prop](/en/guides/markdown-content/#custom-components-with-imported-mdx).
 
 ### `client:load`
 
@@ -170,7 +171,7 @@ If the component is already hidden and shown by a media query in your CSS, then 
 ```
 ### `client:only`
 
-`client:only={string}` **skips** HTML server-rendering, and renders only on the client. It acts similar to `client:load` in that it loads, renders and hydrates the component immediately on page load.
+`client:only={string}` **skips** HTML server-rendering, and renders only on the client. It acts similarly to `client:load` in that it loads, renders, and hydrates the component immediately on page load.
 
 **You must pass the component's correct framework as a value!** Because Astro doesn't run the component during your build / on the server, Astro doesn't know what framework your component uses unless you tell it explicitly.
 
@@ -180,6 +181,7 @@ If the component is already hidden and shown by a media query in your CSS, then 
 <SomeSvelteComponent client:only="svelte" />
 <SomeVueComponent client:only="vue" />
 <SomeSolidComponent client:only="solid-js" />
+<SomeLitComponent client:only="lit" />
 ```
 
 ### Custom Client Directives
@@ -199,7 +201,7 @@ By default, Astro automatically scopes `<style>` CSS rules to the component. You
 
 You can combine `<style>` and `<style is:global>` together in the same component, to create some global style rules while still scoping most of your component CSS.
 
-📚 See the [Styling & CSS](/en/guides/styling/#global-styles) page for more details about how global styles work.
+<ReadMore>See the [Styling & CSS](/en/guides/styling/#global-styles) page for more details about how global styles work.</ReadMore>
 
 ```astro
 <style is:global>
@@ -238,7 +240,7 @@ The `is:inline` directive is implied whenever any attribute other than `src` is 
 </script>
 ```
 
-📚 See how [client-side scripts](/en/guides/client-side-scripts/) work in Astro components.
+<ReadMore>See how [client-side scripts](/en/guides/client-side-scripts/) work in Astro components.</ReadMore>
 
 ### `define:vars`
 

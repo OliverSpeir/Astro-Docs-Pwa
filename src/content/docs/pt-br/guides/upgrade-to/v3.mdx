@@ -4,8 +4,6 @@ description: Como atualizar seu projeto para a versão mais recente do Astro (v3
 i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-import FileTree from '~/components/FileTree.astro'
-
 
 Este guia vai te ajudar a migrar do Astro v2 para o Astro v3.
 
@@ -28,10 +26,10 @@ Atualize a versão do Astro de seu projeto para a versão mais recente utilizand
   <Fragment slot="pnpm">
   ```shell
   # Atualize para v3.x
-  pnpm install astro@latest
+  pnpm add astro@latest
 
   # Exemplo: atualize as integrações React e Tailwind
-  pnpm install @astrojs/react@latest @astrojs/tailwind@latest
+  pnpm add @astrojs/react@latest @astrojs/tailwind@latest
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -313,7 +311,7 @@ Astro v3.0 remove a planificação automática do resultado de `getStaticPaths()
 
 Se você está retornando um array de arrays no lugar de um array de _objetos_ (como é esperado), `.flatMap` e `.flat` agora devem ser usados para garantir que você está retornando um array plano.
 
-Uma [mensagem de erro indicando que o valor de retorno de `getStaticPath()` deve ser um array de objetos](/pt-br/reference/errors/invalid-get-static-paths-entry/#what-went-wrong) será providenciado se você precisa atualizar seu código.
+Uma [mensagem de erro indicando que o valor de retorno de `getStaticPath()` deve ser um array de objetos](/pt-br/reference/errors/invalid-get-static-paths-entry/#o-que-deu-errado) será providenciado se você precisa atualizar seu código.
 
 ### Movido: `astro check` agora requer um pacote externo
 
@@ -430,7 +428,7 @@ Enquanto nós recomendamos manter ele ativado e apropriadamente fazer suas impor
 
 No Astro v2.x, Astro era executado na porta `3000` por padrão.
 
-Astro v3.0 muda a [porta padrão](/pt-br/reference/cli-reference/#--port) para `4321`. 🚀
+Astro v3.0 muda a [porta padrão](/pt-br/reference/cli-reference/#--port-numero) para `4321`. 🚀
 
 #### O que devo fazer?
 
@@ -529,7 +527,7 @@ Astro v3.0 agora inclui Sharp como o novo serviço de processamento de imagem pa
 Ao usar um [gerenciador de pacotes rigoroso](https://pnpm.io/pnpm-vs-npm#npms-flat-tree) como o `pnpm`, talvez seja necessário instalar o Sharp manualmente o seu projeto, mesmo que seja uma dependência do Astro:
 
 ```bash
-pnpm install sharp
+pnpm add sharp
 ```
 :::
 
@@ -547,7 +545,7 @@ export default defineConfig({
 
 ### Modificado: Capitalização dos métodos de requisição HTTP
 
-No Astro v2.x, [métodos de requisição HTTP](/pt-br/core-concepts/endpoints/#métodos-http) eram escritos usando nomes de função em letras minúsculas: `get`, `post`, `put`, `all` e `del`.
+No Astro v2.x, [métodos de requisição HTTP](/pt-br/guides/endpoints/#métodos-http) eram escritos usando nomes de função em letras minúsculas: `get`, `post`, `put`, `all` e `del`.
 
 Astro v3.0 utiliza nomes de função em letras maiúsculas, incluindo `DELETE` ao invés de `del`.
 

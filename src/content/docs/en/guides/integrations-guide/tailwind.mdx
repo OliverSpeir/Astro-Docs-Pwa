@@ -8,7 +8,7 @@ i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro';
 
-This **[Astro integration][astro-integration]** brings [Tailwind's](https://tailwindcss.com/) utility CSS classes to every `.astro` file and [framework component](/en/core-concepts/framework-components/) in your project, along with support for the Tailwind configuration file.
+This **[Astro integration][astro-integration]** brings [Tailwind's](https://tailwindcss.com/) utility CSS classes to every `.astro` file and [framework component](/en/guides/framework-components/) in your project, along with support for the Tailwind configuration file.
 
 ## Why Tailwind?
 
@@ -24,7 +24,7 @@ Note: it's generally discouraged to use both Tailwind and another styling method
 
 Astro includes an `astro add` command to automate the setup of official integrations. If you prefer, you can [install integrations manually](#manual-install) instead.
 
-Run one of the following commands in a new terminal window. 
+Run one of the following commands in a new terminal window.
 
 <PackageManagerTabs>
   <Fragment slot="npm">
@@ -68,7 +68,7 @@ First, install the `@astrojs/tailwind` and `tailwindcss` packages using your pac
   </Fragment>
 </PackageManagerTabs>
 
-Then, apply the integration to your `astro.config.*` file using the `integrations` property:
+Then, apply the integration to your Astro config file file using the `integrations` property:
 
 ```js ins={2} ins="tailwind()" title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
@@ -80,8 +80,8 @@ export default defineConfig({
 });
 ```
 
-Then, create a `tailwind.config.cjs` file in your project's root directory. You can use the following command to generate a basic configuration file for you:
-  
+Then, create a `tailwind.config.mjs` file in your project's root directory. You can use the following command to generate a basic configuration file for you:
+
 <PackageManagerTabs>
   <Fragment slot="npm">
   ```sh
@@ -100,11 +100,11 @@ Then, create a `tailwind.config.cjs` file in your project's root directory. You 
   </Fragment>
 </PackageManagerTabs>
 
-Finally, add this basic configuration to your `tailwind.config.cjs` file:
+Finally, add this basic configuration to your `tailwind.config.mjs` file:
 
-```js ins={3} title="tailwind.config.cjs" "content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}']"
+```js ins={3} title="tailwind.config.mjs" "content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}']"
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {},
@@ -125,7 +125,7 @@ When you install the integration, Tailwind's utility classes should be ready to 
 
 If you used the Quick Install instructions and said yes to each prompt, you'll see a `tailwind.config.mjs` file in your project's root directory. Use this file for your Tailwind configuration changes. You can learn how to customize Tailwind using this file [in the Tailwind docs](https://tailwindcss.com/docs/configuration).
 
-If it isn't there, you add your own `tailwind.config.(js|cjs|mjs)` file to the root directory and the integration will use its configurations. This can be great if you already have Tailwind configured in another project and want to bring those settings over to this one.
+If it isn't there, you add your own `tailwind.config.(js|cjs|mjs|ts|mts|cts)` file to the root directory and the integration will use its configurations. This can be great if you already have Tailwind configured in another project and want to bring those settings over to this one.
 
 ### Configuring the Integration
 
@@ -135,7 +135,7 @@ The Astro Tailwind integration handles the communication between Astro and Tailw
 
 Previously known as `config.path` in `@astrojs/tailwind` v3. See the [v4 changelog](https://github.com/withastro/astro/blob/main/packages/integrations/tailwind/CHANGELOG.md#400) for updating your config.
 
-If you want to use a different Tailwind configuration file instead of the default `tailwind.config.(js|cjs|mjs)`, specify that file's location using this integration's `configFile` option. If `configFile` is relative, it will be resolved relative to the current working directory.
+If you want to use a different Tailwind configuration file instead of the default `tailwind.config.(js|cjs|mjs|ts|mts|cts)`, specify that file's location using this integration's `configFile` option. If `configFile` is relative, it will be resolved relative to the current working directory.
 
 :::caution
 Changing this isn't recommended since it can cause problems with other tools that integrate with Tailwind, like the official Tailwind VSCode extension.
@@ -150,7 +150,7 @@ export default defineConfig({
   integrations: [
     tailwind({
       // Example: Provide a custom path to a Tailwind config file
-      configFile: './custom-config.cjs',
+      configFile: './custom-config.mjs',
     }),
   ],
 });
@@ -173,6 +173,7 @@ To disable this default behavior, set `applyBaseStyles` to `false`. This can be 
 
 ```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   // ...
@@ -195,6 +196,7 @@ Set `true` to apply the [`tailwindcss/nesting` PostCSS plugin](https://tailwindc
 ```js ins="nesting: true"
 // astro.config.mjs
 import { defineConfig } from 'astro/config';
+import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   integrations: [
@@ -211,7 +213,7 @@ export default defineConfig({
 
 * The [Astro Tailwind Starter](https://github.com/withastro/astro/tree/latest/examples/with-tailwindcss?on=github) gets you up and running with a base for your project that uses Tailwind for styling
 * Astro's homepage uses Tailwind. Check out its [Tailwind configuration file](https://github.com/withastro/astro.build/blob/main/tailwind.config.ts) or an [example component](https://github.com/withastro/astro.build/blob/main/src/components/Checkbox.astro)
-* The [Astro Ink](https://github.com/one-aalam/astro-ink), [Sarissa Blog](https://github.com/iozcelik/SarissaBlogAstroStarter), and [Creek](https://github.com/robertguss/Astro-Theme-Creek) themes use Tailwind for styling
+* The [Astro Ink](https://github.com/one-aalam/astro-ink), [Sarissa Blog](https://github.com/iozcelik/SarissaBlogAstroStarter), [Astro Tech Blog](https://github.com/nicdun/astro-tech-blog) and [Creek](https://github.com/robertguss/Astro-Theme-Creek) themes use Tailwind for styling
 * [Browse Astro Tailwind projects on GitHub](https://github.com/search?q=%22%40astrojs%2Ftailwind%22%3A+path%3A%2Fpackage.json\&type=code) for more examples!
 
 ## Troubleshooting
@@ -226,7 +228,7 @@ error   The `text-special` class does not exist. If `text-special` is a custom c
 
 [Instead of using `@layer` directives in a global stylesheet](https://tailwindcss.com/docs/functions-and-directives#using-apply-with-per-component-css), define your custom styles by adding a plugin to your Tailwind config to fix it:
 
-```js title="tailwind.config.cjs"
+```js title="tailwind.config.mjs"
 export default {
   // ...
   plugins: [
@@ -264,4 +266,4 @@ You can also check our [Astro Integration Documentation][astro-integration] for 
 
 [astro-integration]: /en/guides/integrations-guide/
 
-[astro-ui-frameworks]: /en/core-concepts/framework-components/#using-framework-components
+[astro-ui-frameworks]: /en/guides/framework-components/#using-framework-components

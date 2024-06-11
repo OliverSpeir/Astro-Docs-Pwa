@@ -7,6 +7,8 @@ category: other
 i18nReady: true
 ---
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
+import ReadMore from '~/components/ReadMore.astro'
+import Since from '~/components/Since.astro'
 
 Cette **[intégration Astro][astro-integration]** permet d'utiliser les composants [MDX](https://mdxjs.com/) et de créer des pages sous forme de fichiers `.mdx`.
 
@@ -130,12 +132,12 @@ export default defineConfig({
 MDX ne permet pas de fournir les plugins remark et rehype sous la forme d'une chaîne. Vous devez installer, importer et appliquer la fonction du plugin à la place.
 :::
 
-📚 Voir la [référence des options Markdown](/fr/reference/configuration-reference/#markdown-options) pour une liste complète des options.
+<ReadMore>Voir la [référence des options Markdown](/fr/reference/configuration-reference/#markdown-options) pour une liste complète des options.</ReadMore>
 
 ### `extendMarkdownConfig`
 
-* **Type:** `boolean`
-* **Default:** `true`
+* **Type :** `boolean`
+* **Défaut :** `true`
 
 MDX étend par défaut [la configuration Markdown existante de votre projet](/fr/reference/configuration-reference/#markdown-options). Pour remplacer certaines options, vous pouvez spécifier leur équivalent dans votre configuration MDX.
 
@@ -195,7 +197,7 @@ Nous vous suggérons [d'utiliser AST Explorer](https://astexplorer.net/) pour jo
 
 ### `optimize`
 
-* **Type:** `boolean | { customComponentNames?: string[] }`
+* **Type :** `boolean | { ignoreElementNames?: string[] }`
 
 Il s'agit d'un paramètre de configuration facultatif qui permet d'optimiser la sortie MDX pour une construction et un rendu plus rapides grâce à un plugin rehype interne. Cela peut être utile si vous avez beaucoup de fichiers MDX et que vous constatez des lenteurs dans la construction. Cependant, cette option peut générer du HTML non échappé, assurez-vous donc que les parties interactives de votre site fonctionnent toujours correctement après l'avoir activée.
 
@@ -215,13 +217,16 @@ export default defineConfig({
 });
 ```
 
-#### `customComponentNames`
+#### `ignoreElementNames`
 
-* **Type:** `string[]`
+* **Type :** `string[]`
 
-Une propriété optionnelle de `optimize` pour empêcher l'optimisateur MDX de gérer tout [composant personnalisé passé au contenu MDX importé via la propriété components](/fr/guides/markdown-content/#composants-personnalisés-avec-du-mdx-importé).
+<p><Since pkg="@astrojs/mdx" v="3.0.0" /></p>
+Précédemment connu sous le nom de `customComponentNames`.
 
-Vous devrez exclure ces composants de l'optimisation, car l'optimisateur convertit trop rapidement le contenu en une chaîne statique, ce qui brisera les composants personnalisés qui ont besoin d'être rendus dynamiquement.
+Une propriété optionnelle de `optimize` pour empêcher l'optimiseur MDX de gérer certains noms d'éléments, comme [les composants personnalisés passés au contenu MDX importé via la propriété components](/fr/guides/markdown-content/#composants-personnalisés-avec-du-mdx-importé).
+
+Vous devrez exclure ces composants de l'optimisation, car l'optimiseur convertit trop rapidement le contenu en une chaîne statique, ce qui brisera les composants personnalisés qui ont besoin d'être rendus dynamiquement.
 
 Par exemple, la sortie MDX prévue pour ce qui suit est `<Heading>...</Heading>` à la place de chaque `"<h1>...</h1>"` :
 
@@ -234,7 +239,7 @@ import Heading from '../Heading.astro';
 <Content components={{ ...components, h1: Heading }} />
 ```
 
-Pour configurer l'optimisation à l'aide de la propriété `customComponentNames`, spécifiez un tableau de noms d'éléments HTML qui doivent être traités comme des composants personnalisés :
+Pour configurer l'optimisation à l'aide de la propriété `ignoreElementNames`, spécifiez un tableau de noms d'éléments HTML qui doivent être traités comme des composants personnalisés :
 
 ```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
@@ -245,9 +250,9 @@ export default defineConfig({
   integrations: [
     mdx({
       optimize: {
-        // Empêcher l'optimisateur de traiter les éléments `h1`.
+        // Empêcher l'optimiseur de traiter les éléments `h1`.
         // Ceux-ci seront traités comme des composants personnalisés
-        customComponentNames: ['h1'],
+        ignoreElementNames: ['h1'],
       },
     }),
   ],
@@ -262,4 +267,4 @@ Notez que si votre fichier MDX [configure les composants personnalisés en utili
 
 [astro-integration]: /fr/guides/integrations-guide/
 
-[astro-ui-frameworks]: /fr/core-concepts/framework-components/#utilisation-des-composants-de-framework
+[astro-ui-frameworks]: /fr/guides/framework-components/#utilisation-des-composants-de-framework

@@ -3,9 +3,10 @@ title: Markdown y MDX
 description: Aprende a crear contenido usando Markdown o MDX en Astro
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro';
+import { FileTree } from '@astrojs/starlight/components';
 import Since from '~/components/Since.astro';
 import RecipeLinks from "~/components/RecipeLinks.astro";
+import ReadMore from '~/components/ReadMore.astro'
 
 El [Markdown](https://daringfireball.net/projects/markdown/) se usa comúnmente para crear contenido con mucho texto, como artículos de blog y documentación. Astro incluye soporte integrado para archivos estándar de Markdown, que también pueden incluir [frontmatter YAML](https://dev.to/paulasantamaria/introduction-to-yaml-125f) para definir metadatos personalizados como un título, descripción y etiquetas.
 
@@ -56,7 +57,7 @@ No tiene muchos estilos pero Markdown soporta:
 - ¡y más!
 ```
 
-📚 Lee más acerca del [enrutamiento basado en archivos](/es/core-concepts/routing/) u opciones para crear [rutas dinámicas](/es/core-concepts/routing/#rutas-dinámicas).
+<ReadMore>Lee más acerca del [enrutamiento basado en archivos](/es/guides/routing/) u opciones para crear [rutas dinámicas](/es/guides/routing/#rutas-dinámicas).</ReadMore>
 
 ## Características de Markdown
 
@@ -64,7 +65,7 @@ Astro provee algunas características adicionales incorporadas disponibles a la 
 
 ### `layout` en el Frontmatter
 
-Astro provee a las páginas de Markdown y MDX de una propiedad especial en el frontmatter para `layout` que define la ruta relativa (o un [alias](/es/guides/aliases/)) a un [componente plantilla](/es/core-concepts/layouts/) de Astro.
+Astro provee a [las páginas de Markdown y MDX](/es/basics/astro-pages/#páginas-markdownmdx) (localizadas en `src/pages/`) una propiedad especial en el frontmatter para `layout` que define la ruta relativa (o un [alias](/es/guides/aliases/)) a un [componente plantilla](/es/basics/layouts/) de Astro.
 
 ```markdown {3}
 ---
@@ -77,7 +78,7 @@ description: ¡Descubre por qué Astro es genial!
 Este es un artículo escrito en Markdown.
 ```
 
-[Luego las propiedades especificas están disponibles para el componente plantilla](/es/core-concepts/layouts/#props-de-plantillas-markdown) a través de `Astro.props`. Por ejemplo, puedes acceder a las propiedades del frontmatter a través de `Astro.props.frontmatter`:
+[Luego las propiedades especificas están disponibles para el componente plantilla](/es/basics/layouts/#props-de-plantillas-markdown) a través de `Astro.props`. Por ejemplo, puedes acceder a las propiedades del frontmatter a través de `Astro.props.frontmatter`:
 
 ```astro /frontmatter(?:.\w+)?/
 ---
@@ -94,12 +95,9 @@ const { frontmatter } = Astro.props;
 </html>
 ```
 
-
 Puedes también [aplicar estilos al Markdown](/es/guides/styling/#estilando-markdown) en tu componente plantilla.
 
-
-📚 Aprende más acerca de [Plantillas de Markdown](/es/core-concepts/layouts/#plantillas-de-markdownmdx).
-
+<ReadMore>Aprende más acerca de [Plantillas de Markdown](/es/basics/layouts/#plantillas-de-markdownmdx).</ReadMore>
 
 ### IDs de Encabezado
 
@@ -160,13 +158,13 @@ title: 'Mi primer artículo MDX'
 
 ### Usando Componentes en MDX
 
-Luego de instalar la integración con MDX, puedes importar y utilizar ambos [componentes de Astro components](/es/core-concepts/astro-components/#props-de-componentes) y [componentes de frameworks UI](/es/core-concepts/framework-components/#usando-componente-de-framework) en archivos MDX (`.mdx`) de la misma manera que los usarías en cualquier otro componente de Astro.
+Luego de instalar la integración con MDX, puedes importar y utilizar ambos [componentes de Astro components](/es/basics/astro-components/#props-de-componentes) y [componentes de frameworks UI](/es/guides/framework-components/#usando-componente-de-framework) en archivos MDX (`.mdx`) de la misma manera que los usarías en cualquier otro componente de Astro.
 
 ¡No olvides agregar una directiva `client:` en tus componentes de frameworks UI si es necesario!
 
 Puedes ver más ejemplos de declaraciones de import y export en la [documentación de MDX](https://mdxjs.com/docs/what-is-mdx/#esm).
 
-```astro title="src/pages/about.mdx" {5-6} /<.+\/>/
+```mdx title="src/pages/about.mdx" {5-6} /<.+\/>/
 ---
 layout: ../layouts/BaseLayout.astro
 title: Acerca de mi
@@ -291,7 +289,7 @@ const posts = await Astro.glob<Frontmatter>('../pages/post/*.md');
 ### Propiedades exportadas
 
 :::note[¿Usando una plantilla de Astro?]
-Puedes ver las [propiedades exportadas a un componente de plantilla de Astro](/es/core-concepts/layouts/#props-de-plantillas-markdown) cuando usas el [layout en el Frontmatter](#layout-en-el-frontmatter) especial de Astro
+Puedes ver las [propiedades exportadas a un componente de plantilla de Astro](/es/basics/layouts/#props-de-plantillas-markdown) cuando usas el [layout en el Frontmatter](#layout-en-el-frontmatter) especial de Astro
 :::
 
 Estas propiedades están disponibles en un componente `.astro` cuando usas una declaración `import` o `Astro.glob()`:
@@ -321,7 +319,7 @@ import {Content as PromoBanner} from '../components/promoBanner.md';
 
 #### Ejemplo: Enrutamiento de página dinámico
 
-Si no deseas poner tus archivos Markdown/MDX en la carpeta `src/pages` para crear rutas de página, puedes [generar páginas dinámicamente](/es/core-concepts/routing/#rutas-dinámicas).
+Si no deseas poner tus archivos Markdown/MDX en la carpeta `src/pages` para crear rutas de página, puedes [generar páginas dinámicamente](/es/guides/routing/#rutas-dinámicas).
 
 Para acceder al contenido Markdown, puedes pasar el componente `<Content/>` a través de las `props` de la página Astro. Luego, puedes obtener el componente desde `Astro.props` y renderizarlo en tu plantilla.
 
@@ -411,7 +409,7 @@ export default defineConfig({
   markdown: {
     // Aplicado a archivos .md y .mdx
    remarkPlugins: [remarkToc],
-  rehypePlugins: [rehypeAccessibleEmojis],
+   rehypePlugins: [rehypeAccessibleEmojis],
   },
 });
 ```
@@ -439,6 +437,10 @@ export default defineConfig({
   },
 });
 ```
+
+:::note
+`getHeadings()` solo devuelve los encabezados escritos directamente en un archivo Markdown o MDX. Si un archivo MDX importa componentes que contienen sus propios encabezados, estos no serán devueltos por `getHeadings()`.
+:::
 
 #### Personalizando un plugin
 
@@ -564,7 +566,7 @@ export default defineConfig({
 
 ### Resaltado de sintaxis
 
-Astro viene con soporte integrado para [Shiki](https://shiki.matsu.io/) (via [Shikiji](https://github.com/antfu/shikiji)) y [Prism](https://prismjs.com/). Esto proporciona un resaltado de sintaxis instantáneo para:
+Astro viene con soporte integrado para [Shiki](https://shiki.style/) y [Prism](https://prismjs.com/). Esto proporciona un resaltado de sintaxis instantáneo para:
 
 - todas las vallas de código (\`\`\`) usadas en Markdown o archivos MDX.
 - el contenido dentro del [componente incorporado `<Code />`](/es/reference/api-reference/#code-) (con la tecnología de Shiki)
@@ -583,20 +585,23 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       // Escoge entre los temas integrados de Shiki (o agrega los tuyos propios)
-      // https://github.com/shikijs/shiki/blob/main/docs/themes.md
+      // https://shiki.style/themes
       theme: 'dracula',
       // Alternativamente, proporciona múltiples temas.
-      // https://shikiji.netlify.app/guide/dual-themes#light-dark-dual-themes
-      experimentalThemes: {
+      // https://shiki.style/guide/dual-themes
+      themes: {
         light: 'github-light',
         dark: 'github-dark',
       },
       // Agrega lenguajes de programación personalizados
       // Nota: Shiki tiene innumerables lenguajes de programación incorporados, ¡incluido .astro!
-      // https://github.com/shikijs/shiki/blob/main/docs/languages.md
+      // https://shiki.style/languages
       langs: [],
       // Habilita word wrap para evitar el desplazamiento horizontal
       wrap: true,
+      // Agrega transformadores personalizados: https://shiki.style/guide/transformers
+      // Encuentra transformadores comunes: https://shiki.style/packages/transformers
+      transformers: [],
     },
   },
 });
@@ -617,7 +622,7 @@ export default defineConfig({
 });
 ```
 
-También sugerimos leer [la documentación de Shiki sobre sus temas](https://github.com/shikijs/shiki/blob/main/docs/themes.md#loading-theme) para explorar la carga de temas personalizados, alternar entre modo claro y oscuro, o estilar utilizando variables de CSS.
+También sugerimos leer [la documentación de Shiki sobre sus temas](https://shiki.style/themes) para explorar la carga de temas personalizados, alternar entre modo claro y oscuro, o estilar utilizando variables de CSS.
 
 #### Cambia el resaltador de sintaxis predeterminado
 
@@ -627,12 +632,10 @@ Si deseas cambiar a `'prism'` o deshabilitar el resaltado de sintaxis por comple
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-export default {
   markdown: {
     // Puede ser 'shiki' (predeterminado), 'prism' o false para deshabilitar el resaltado
     syntaxHighlight: 'prism',
   },
-};
 });
 ```
 
@@ -641,8 +644,8 @@ export default {
 Si optas por usar Prism, se aplicarán las clases CSS de Prism en su lugar. ¡Ten en cuenta que **necesitas aportar tu propia hoja de estilo CSS** para que aparezca el resaltado de sintaxis!
 
 1. Escoge una hoja de estilos prediseñada de los [Temas de Prism](https://github.com/PrismJS/prism-themes) disponibles.
-2. Agrega esta hoja de estilos a la [carpeta `public/` de tu proyecto](/es/core-concepts/project-structure/#public).
-3. Agrega esto en el `<head>` de tu página en un [componente de plantilla](/es/core-concepts/layouts/) a través de una etiqueta `<link>`. (Lee sobre el [uso básico de Prism](https://prismjs.com/#basic-usage).)
+2. Agrega esta hoja de estilos a la [carpeta `public/` de tu proyecto](/es/basics/project-structure/#public).
+3. Agrega esto en el `<head>` de tu página en un [componente de plantilla](/es/basics/layouts/) a través de una etiqueta `<link>`. (Lee sobre el [uso básico de Prism](https://prismjs.com/#basic-usage).)
 
 También puedes visitar la [lista de lenguajes soportados por Prism](https://prismjs.com/#supported-languages) para ver las opciones y su uso.
 

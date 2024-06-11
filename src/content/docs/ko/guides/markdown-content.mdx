@@ -3,10 +3,11 @@ title: Markdown & MDX
 description: Astro에서 Markdown 또는 MDX를 사용하여 콘텐츠를 만드는 방법을 알아보세요.
 i18nReady: true
 ---
-
-import Since from '~/components/Since.astro'
-import FileTree from '~/components/FileTree.astro'
+import Since from '~/components/Since.astro';
+import { FileTree } from '@astrojs/starlight/components';
 import RecipeLinks from "~/components/RecipeLinks.astro";
+import ReadMore from '~/components/ReadMore.astro';
+import { Steps } from '@astrojs/starlight/components';
 
 [Markdown](https://daringfireball.net/projects/markdown/)은 일반적으로 블로그 게시물 및 문서와 같이 텍스트가 많은 콘텐츠를 작성하는 데 사용됩니다. Astro에는 title, description, tags와 같은 사용자 정의 메타데이터를 정의하기 위해 [프런트매터 YAML](https://dev.to/paulasantamaria/introduction-to-yaml-125f)도 포함할 수 있는 표준 Markdown 파일에 대한 기본 지원이 포함되어 있습니다.
 
@@ -55,7 +56,7 @@ It probably isn't styled much, but Markdown does support:
 - and more!
 ```
 
-📚 Astro의 [파일 기반 라우팅](/ko/core-concepts/routing/) 또는 [동적 경로](/ko/core-concepts/routing/#동적-경로) 생성 옵션에 대해 자세히 알아보세요.
+<ReadMore>Astro의 [파일 기반 라우팅](/ko/guides/routing/) 또는 [동적 경로](/ko/guides/routing/#동적-경로) 생성 옵션에 대해 자세히 알아보세요.</ReadMore>
 
 ## Markdown 기능
 
@@ -63,7 +64,7 @@ Astro는 Markdown 및 MDX 파일을 사용할 때 사용할 수 있는 몇 가�
 
 ### 프런트매터 `layout`
 
-Astro는 Astro [레이아웃 컴포넌트](/ko/core-concepts/layouts/#markdownmdx-레이아웃)에 대한 상대 경로 (또는 [별칭](/ko/guides/aliases/))를 지정할 수 있는 특별한 프런트매터 `layout` 속성이 있는 Markdown 및 MDX 페이지를 제공합니다.
+Astro는 Astro [레이아웃 컴포넌트](/ko/basics/layouts/#markdownmdx-레이아웃)에 대한 상대 경로 (또는 [별칭](/ko/guides/aliases/))를 지정할 수 있는 특별한 프런트매터 `layout` 속성이 있는 [Markdown 및 MDX 페이지](/ko/basics/astro-pages/#markdownmdx-페이지) (`src/pages/`에 위치하는)를 제공합니다.
 
 ```markdown {3}
 ---
@@ -76,7 +77,7 @@ description: Find out what makes Astro awesome!
 This is a post written in Markdown.
 ```
 
-그런 다음 `Astro.props`를 통해 [레이아웃 컴포넌트에 특정 속성을 사용할 수 있습니다](/ko/core-concepts/layouts/#markdown-레이아웃-props). 예를 들어 `Astro.props.frontmatter`를 통해 frontmatter 속성에 액세스할 수 있습니다.
+그런 다음 `Astro.props`를 통해 [레이아웃 컴포넌트에 특정 속성을 사용할 수 있습니다](/ko/basics/layouts/#markdown-레이아웃-props). 예를 들어 `Astro.props.frontmatter`를 통해 frontmatter 속성에 액세스할 수 있습니다.
 
 ```astro /frontmatter(?:.\w+)?/
 ---
@@ -95,7 +96,7 @@ const {frontmatter} = Astro.props;
 
 레이아웃 컴포넌트에서 [Markdown 스타일을 지정](/ko/guides/styling/#markdown-스타일링)할 수도 있습니다.
 
-📚 [Markdown 레이아웃](/ko/core-concepts/layouts/#markdownmdx-레이아웃)에 대해 자세히 알아보세요.
+<ReadMore>[Markdown 레이아웃](/ko/basics/layouts/#markdownmdx-레이아웃)에 대해 자세히 알아보세요.</ReadMore>
 
 ### 제목 ID
 
@@ -157,7 +158,7 @@ title: 'My first MDX post'
 
 ### MDX에서 컴포넌트 사용
 
-MDX 통합을 설치한 후 다른 Astro 컴포넌트에서 사용하는 것처럼 [Astro 컴포넌트](/ko/core-concepts/astro-components/#컴포넌트-props)와 [UI 프레임워크 컴포넌트](/ko/core-concepts/framework-components/#프레임워크-컴포넌트-사용하기)를 MDX (`.mdx`) 파일로 가져와 사용할 수 있습니다.
+MDX 통합을 설치한 후 다른 Astro 컴포넌트에서 사용하는 것처럼 [Astro 컴포넌트](/ko/basics/astro-components/#컴포넌트-props)와 [UI 프레임워크 컴포넌트](/ko/guides/framework-components/#프레임워크-컴포넌트-사용)를 MDX (`.mdx`) 파일로 가져와 사용할 수 있습니다.
 
 필요한 경우 UI 프레임워크 컴포넌트에 `client:directive`를 포함하는 것을 잊지 마세요!
 
@@ -288,7 +289,7 @@ const posts = await Astro.glob<Frontmatter>('../pages/post/*.md');
 ### 내보낸 속성
 
 :::note[Astro 레이아웃을 사용하시나요?]
-Astro의 특수한 [프런트매터 layout](#프런트매터-layout)을 사용할 때 [Astro 레이아웃 컴포넌트로 내보낸 속성](/ko/core-concepts/layouts/#markdown-레이아웃-props)을 확인하세요.
+Astro의 특수한 [프런트매터 layout](#프런트매터-layout)을 사용할 때 [Astro 레이아웃 컴포넌트로 내보낸 속성](/ko/basics/layouts/#markdown-레이아웃-props)을 확인하세요.
 :::
 
 `import` 문이나 `Astro.glob()`을 사용할 때 `.astro` 컴포넌트에 다음 속성을 사용할 수 있습니다.
@@ -317,7 +318,7 @@ import {Content as PromoBanner} from '../components/promoBanner.md';
 
 #### 예: 동적 페이지 라우팅
 
-페이지 경로를 생성하기 위해 Markdown/MDX 파일을 `src/pages/` 디렉터리에 두는 대신 [페이지를 동적으로 생성](/ko/core-concepts/routing/#동적-경로)할 수 있습니다.
+페이지 경로를 생성하기 위해 Markdown/MDX 파일을 `src/pages/` 디렉터리에 두는 대신 [페이지를 동적으로 생성](/ko/guides/routing/#동적-경로)할 수 있습니다.
 
 Markdown 콘텐츠에 액세스하려면 Astro 페이지의 `props`를 통해 `<Content/>` 컴포넌트를 전달하세요. 그런 다음 `Astro.props`에서 컴포넌트를 검색하여 페이지 템플릿에 렌더링할 수 있습니다.
 
@@ -436,6 +437,10 @@ export default defineConfig({
 });
 ```
 
+:::note
+`getHeadings()`는 Markdown 또는 MDX 파일에 직접 작성된 제목만 반환합니다. MDX 파일이 자체 제목을 포함하는 컴포넌트를 가져오는 경우, `getHeadings()`에 의해 반환되지 않습니다.
+:::
+
 #### 플러그인 맞춤설정
 
 플러그인을 사용자 정의하려면 중첩 배열에서 플러그인 뒤에 옵션 객체를 제공하세요.
@@ -463,6 +468,7 @@ export default {
 
 [remark 또는 rehype 플러그인](#markdown-플러그인)을 사용하여 모든 Markdown 및 MDX 파일에 프런트매터 속성을 추가할 수 있습니다.
 
+<Steps>
 1. 플러그인의 `file` 인수에서 `data.astro.frontmatter` 속성에 `customProperty`를 추가합니다.
 
     ```js title="example-remark-plugin.mjs"
@@ -507,6 +513,7 @@ export default {
       ],
     });
     ```
+</Steps>
 
 이제 모든 Markdown 또는 MDX 파일의 프런트매터에 `customProperty`가 있으므로 [Markdown을 가져올 때](#markdown-가져오기) [레이아웃의 `Astro.props.frontmatter` 속성](#프런트매터-layout)에서 사용할 수 있습니다.
 
@@ -564,7 +571,7 @@ export default defineConfig({
 
 ### 구문 강조
 
-Astro에는 [Shiki](https://shiki.matsu.io/) ([Shikiji](https://github.com/antfu/shikiji)를 통해) 및 [Prism](https://prismjs.com/)에 대한 지원이 내장되어 있습니다. 이는 다음에 대한 구문 강조를 제공합니다.
+Astro에는 [Shiki](https://shiki.style/) 및 [Prism](https://prismjs.com/)에 대한 지원이 내장되어 있습니다. 이는 다음에 대한 구문 강조를 제공합니다.
 
 - Markdown 또는 MDX 파일에 사용되는 모든 코드 펜스(\`\`\`).
 - [내장 `<Code />` 컴포넌트](/ko/reference/api-reference/#code-)의 콘텐츠 (Shiki 제공).
@@ -583,20 +590,23 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       // Shiki에 내장된 테마 중에서 선택하거나 직접 추가하세요.
-      // https://github.com/shikijs/shiki/blob/main/docs/themes.md
+      // https://shiki.style/themes
       theme: 'dracula',
       // 또는 여러 테마를 제공하세요.
-      // https://shikiji.netlify.app/guide/dual-themes#light-dark-dual-themes
-      experimentalThemes: {
+      // https://shiki.style/guide/dual-themes#light-dark-dual-themes
+      themes: {
         light: 'github-light',
         dark: 'github-dark',
       },
-      // 사용자 정의 언어 추가
+      // 맞춤 언어 추가
       // 참고: Shiki에는 .astro를 포함하여 수많은 언어가 내장되어 있습니다!
-      // https://github.com/shikijs/shiki/blob/main/docs/languages.md
+      // https://shiki.style/languages
       langs: [],
       // 가로 스크롤을 방지하려면 word wrap을 활성화하세요.
       wrap: true,
+      // 맞춤 transformers 추가: https://shiki.style/guide/transformers
+      // 일반 transformers 찾기: https://shiki.style/packages/transformers
+      transformers: [],
     },
   },
 });
@@ -617,7 +627,7 @@ export default defineConfig({
 });
 ```
 
-또한 테마, 밝은 모드와 어두운 모드 전환 또는 CSS 변수를 통한 스타일 지정에 대해 자세히 알아보려면 [Shiki의 자체 테마 문서](https://github.com/shikijs/shiki/blob/main/docs/themes.md#loading-theme)를 읽어보는 것이 좋습니다.
+또한 테마, 밝은 모드와 어두운 모드 전환 또는 CSS 변수를 통한 스타일 지정에 대해 자세히 알아보려면 [Shiki의 자체 테마 문서](https://shiki.style/themes)를 읽어보는 것이 좋습니다.
 
 #### 기본 구문 강조 모드 변경
 
@@ -638,9 +648,13 @@ export default defineConfig({
 
 Prism을 사용하기로 선택한 경우 Astro는 대신 Prism의 CSS 클래스를 적용합니다. 구문 강조를 표시하려면 **자신만의 CSS 스타일시트를 가져와야 합니다**.
 
+<Steps>
 1. 사용 가능한 [Prism 테마](https://github.com/PrismJS/prism-themes)에서 미리 만들어진 스타일시트를 선택합니다.
-2. 이 스타일시트를 [프로젝트의 `public/` 디렉터리](/ko/core-concepts/project-structure/#public)에 추가하세요.
-3. `<link>` 태그를 통해 [레이아웃 컴포넌트](/ko/core-concepts/layouts/)에 있는 페이지의 `<head>`에 이를 로드합니다. ([Prism 기본 사용법](https://prismjs.com/#basic-usage)을 참고하세요.)
+
+2. 이 스타일시트를 [프로젝트의 `public/` 디렉터리](/ko/basics/project-structure/#public)에 추가하세요.
+
+3. `<link>` 태그를 통해 [레이아웃 컴포넌트](/ko/basics/layouts/)에 있는 페이지의 `<head>`에 이를 로드합니다. ([Prism 기본 사용법](https://prismjs.com/#basic-usage)을 참고하세요.)
+</Steps>
 
 옵션 및 사용법을 알아보려면 [Prism에서 지원하는 언어 목록](https://prismjs.com/#supported-languages)을 방문하세요.
 

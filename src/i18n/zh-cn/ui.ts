@@ -106,14 +106,12 @@ export default UIDictionary({
 	'feedback.sendFeedback': '发送反馈',
 	'feedback.sendFeedback.description': '直接给我们发送消息。',
 	'feedback.idea': '想法',
-	'feedback.other': '其它',
+	'feedback.other': '其他',
 	'feedback.messageA11yLabel': '留言',
 	'feedback.placeholder': '你想让我们知道什么？',
 	'feedback.submit': '提交反馈',
 	'feedback.close': '关闭反馈表单',
 	'feedback.success': '感谢！我们收到了你的反馈。',
-	// `<FileTree>` component
-	'fileTree.directoryLabel': '目录',
 	// Code snippet vocabulary
 	'expressiveCode.terminalWindowFallbackTitle': '终端窗口',
 	'expressiveCode.copyButtonTooltip': '复制到剪贴板',
@@ -130,4 +128,6 @@ export default UIDictionary({
 	// Starlight banner
 	'starlight.title': '想要构建你自己的文档？',
 	'starlight.description': '获取此模板以开始使用。',
+	// `<StudioHeading>` component
+	'studioHeading.label': 'Studio 功能',
 });

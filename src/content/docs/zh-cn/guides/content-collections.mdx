@@ -5,7 +5,7 @@ description: >-
 
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro'
+import { FileTree } from '@astrojs/starlight/components';
 import Since from '~/components/Since.astro'
 import RecipeLinks from "~/components/RecipeLinks.astro"
 import Badge from "~/components/Badge.astro"
@@ -18,7 +18,7 @@ import Badge from "~/components/Badge.astro"
 
 一个**内容集合**是保留在 `src/content` 目录中的任何顶级目录，比如 `src/content/newsletter` 和 `src/content/authors` 。内容集合只允许在 `src/content` 目录中。此目录不能用于其他用处。
 
-一个**内容条目**是存储在内容集合目录中的任何内容片段。内容条目存储在 Markdown (`.md`) 或 MDX (`.mdx`) 文件中。你可以使用任何想用的文件名，但是我们建议使用一致的命名方案 (小写，破折号而不是空格) ，以便更容易地查找和组织内容。条目可以使用内容文件的格式，包括 Markdown (`.md`) 和 MDX (`.mdx` 使用 [MDX 集成](/zh-cn/guides/integrations-guide/mdx/)) 或这被支持的二者之一的数据格式：YAML (`.yaml`) 和 JSON (`.json`)。我们建议为文件使用一致的命名方案（小写、破折号而不是空格），以便更轻松地查找和组织你的内容，但这不是必须的。你还可以通过在文件名前添加下划线 (_) 来[从构建中排除条目](/zh-cn/core-concepts/routing/#排除页面)。
+一个**内容条目**是存储在内容集合目录中的任何内容片段。内容条目存储在 Markdown (`.md`) 或 MDX (`.mdx`) 文件中。你可以使用任何想用的文件名，但是我们建议使用一致的命名方案 (小写，破折号而不是空格) ，以便更容易地查找和组织内容。条目可以使用内容文件的格式，包括 Markdown (`.md`) 和 MDX (`.mdx` 使用 [MDX 集成](/zh-cn/guides/integrations-guide/mdx/)) 或者被支持的二者之一的数据格式：YAML (`.yaml`) 和 JSON (`.json`)。我们建议为文件使用一致的命名方案（小写、破折号而不是空格），以便更轻松地查找和组织你的内容，但这不是必须的。你还可以通过在文件名前添加下划线 (_) 来[从构建中排除条目](/zh-cn/guides/routing/#排除页面)。
 
 <FileTree>
 - src/content/
@@ -109,7 +109,7 @@ export const collections = {
 
 ```json title="tsconfig.json" ins={5}
 {
-  // 注意：如果使用 `astro/tsconfigs/strictest` 或 `astro/tsconfigs/strictest`，则不需要更改
+  // 注意：如果使用 `astro/tsconfigs/strict` 或 `astro/tsconfigs/strictest`，则不需要更改
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "strictNullChecks": true
@@ -120,7 +120,7 @@ export const collections = {
 如果在 Astro 项目中使用 `.js` 或者 `.mjs` 文件，你可以启用 IntelliSense，并在编辑器中通过在 `tsconfig.json` 中启用 `allowJs` 来进行类型检查：
 ```json title="tsconfig.json" ins={6}
 {
-  // 注意：如果使用 `astro/tsconfigs/strictest` 或 `astro/tsconfigs/strictest`，则不需要更改
+  // 注意：如果使用 `astro/tsconfigs/strict` 或 `astro/tsconfigs/strictest`，则不需要更改
   "extends": "astro/tsconfigs/base",
   "compilerOptions": {
     "strictNullChecks": true,
@@ -234,7 +234,7 @@ export const collections = {
 
 Astro 使用 [Zod](https://github.com/colinhacks/Zod) 驱动其内容 schema。Astro 使用 Zod 能够验证集合中每个文件的 frontmatter，并在从项目内部查询内容时提供自动的 TypeScript 类型。
 
-要在 Astro 中使用 Zod，请从 `"Astro:content"` 中导入 `z`。这是 Zod 库的重新导出，它支持 Zod 的所有特性。查看[Zod 的 README](https://github.com/colinhacks/Zod) 获得关于 Zod 如何工作以及可用特性的完整文档。
+要在 Astro 中使用 Zod，请从 `"astro:content"` 中导入 `z`。这是 Zod 库的重新导出，它支持 Zod 的所有特性。查看[Zod 的 README](https://github.com/colinhacks/Zod) 获得关于 Zod 如何工作以及可用特性的完整文档。
 
 
 ```ts
@@ -382,7 +382,7 @@ const relatedPosts = await getEntries(blogPost.data.relatedPosts);
 `slug` 属性特定于内容集合，在过滤 JSON 或 YAML 集合时不可用。
 :::
 
-你可以使用它根据您喜欢的任何内容条件进行筛选。例如，你可以通过前端属性（如 `draft`）进行过滤，以防止任何博客文章草稿发布到你的博客上：
+你可以使用它根据你喜欢的任何内容条件进行筛选。例如，你可以通过前端属性（如 `draft`）进行过滤，以防止任何博客文章草稿发布到你的博客上：
 
 ```js 
 // 例子：使用 `draft: true` 过滤内容条目
@@ -473,7 +473,7 @@ const { Content, headings } = await entry.render();
 
 ## 从内容生成路由
 
-内容集合存储在 `src/pages/` 目录之外。这意味着默认情况下不为集合项生成路由。你将需要手动创建一个新的[动态路由](/zh-cn/core-concepts/routing/#动态路由)，以便从集合条目生成 HTML 页面。动态路由将映射传入的请求参数（例如：在 `src/pages/blog/[...slug].astro` 中的 `Astro.params.slug`）获取集合中的正确条目。
+内容集合存储在 `src/pages/` 目录之外。这意味着默认情况下不为集合项生成路由。你将需要手动创建一个新的[动态路由](/zh-cn/guides/routing/#动态路由)，以便从集合条目生成 HTML 页面。动态路由将映射传入的请求参数（例如：在 `src/pages/blog/[...slug].astro` 中的 `Astro.params.slug`）获取集合中的正确条目。
 
 生成路由的确切方法将取决于你的构建 [`output`](/zh-cn/reference/configuration-reference/#output) 模式：`static` (默认值) 或 `server` (针对 SSR)。
 
@@ -481,7 +481,7 @@ const { Content, headings } = await entry.render();
 
 如果你正在构建一个静态网站（Astro 的默认行为），你可以使用 [`getStaticPaths()`](/zh-cn/reference/api-reference/#getstaticpaths) 函数在构建过程中从一个 `src/pages/` 组件创建多个页面。
 
-调用 `getStaticPaths()` 中的 [`getCollection()`](/zh-cn/reference/api-reference/#getcollection) 来查询内容。然后，使用每个内容条目的 `slug` 属性创建新的 URL 路径。
+在 `getStaticPaths()` 中调用 `getCollection()` 来[查询你的内容或数据集合](/zh-cn/guides/content-collections/#查询集合)。然后，使用每个内容条目的 `slug` 属性（内容集合）或 `id` 属性（数据集合）创建你的新 URL 路径。
 
 ```astro "{ slug: entry.slug }"
 ---
@@ -505,7 +505,7 @@ const { Content } = await entry.render();
 这将为 `blog` 集合中的每个条目生成一个新页面。例如，`src/content/blog/hello-world.md` 上的条目将有一个 `hello-world` 的 slug，因此它的最终 URL 将是 `post/hello-world/`。
 
 :::note
-如果你的自定义 slug 包含 `/` 字符来生成具有多个路径段的 URL，则必须使用 [rest 参数 (`[...slug]`)](/zh-cn/core-concepts/routing/#剩余参数)在此动态路由页面的 `.astro` 文件名中。
+如果你的自定义 slug 包含 `/` 字符来生成具有多个路径段的 URL，则必须使用 [rest 参数 (`[...slug]`)](/zh-cn/guides/routing/#剩余参数)在此动态路由页面的 `.astro` 文件名中。
 :::
 
 ### 构建为服务器输出（SSR）
@@ -604,6 +604,6 @@ pubDate: 2021-07-08T12:00:00-04:00
 const { frontmatter } = Astro.props;
 ---
 <h1>{frontmatter.title}</h1>
-<p>{frontmatter.pubDate.slice(0,10)}</p>
+<p>{frontmatter.pubDate.toISOString().slice(0,10)}</p>
 ```
 要查看使用 `toLocaleDateString` 格式化日期、月份和年份的例子，请查看官方 Astro 博客模板中的 [`<FormattedDate />` 组件](https://github.com/withastro/astro/blob/latest/examples/blog/src/components/FormattedDate.astro)。

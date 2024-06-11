@@ -7,7 +7,7 @@ i18nReady: true
 ---
 import Since from '~/components/Since.astro';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-
+import ReadMore from '~/components/ReadMore.astro'
 
 
 Astro was designed to make styling and writing CSS a breeze. Write your own CSS directly inside of an Astro component or import your favorite CSS library like [Tailwind][tailwind]. Advanced styling languages like [Sass][sass] and [Less][less] are also supported.
@@ -27,7 +27,7 @@ Styling an Astro component is as easy as adding a `<style>` tag to your componen
 Astro `<style>` CSS rules are automatically **scoped by default**. Scoped styles are compiled behind-the-scenes to only apply to HTML written inside of that same component. The CSS that you write inside of an Astro component is automatically encapsulated inside of that component.
 
 This CSS:
-```astro title="index.astro"
+```astro title="src/pages/index.astro"
 <style>
   h1 { 
     color: red; 
@@ -108,7 +108,7 @@ const { isRed } = Astro.props;
 </style>
 ```
 
-📚 See our [directives reference](/en/reference/directives-reference/#classlist) page to learn more about `class:list`.
+<ReadMore>See our [directives reference](/en/reference/directives-reference/#classlist) page to learn more about `class:list`.</ReadMore>
 
 ### CSS Variables
 
@@ -130,7 +130,8 @@ const backgroundColor = "rgb(24 121 78)";
 <h1>Hello</h1>
 ```
 
-📚 See our [directives reference](/en/reference/directives-reference/#definevars) page to learn more about `define:vars`.
+<ReadMore>See our [directives reference](/en/reference/directives-reference/#definevars) page to learn more about `define:vars`.</ReadMore>
+
 
 ### Passing a `class` to a child component
 
@@ -179,7 +180,7 @@ You can style HTML elements inline using the `style` attribute. This can be a CS
 
 There are two ways to resolve external global stylesheets: an ESM import for files located within your project source, and an absolute URL link for files in your `public/` directory, or hosted outside of your project.
 
-📚 Read more about using [static assets](/en/guides/imports/) located in `public/` or `src/`.
+<ReadMore>Read more about using [static assets](/en/guides/imports/) located in `public/` or `src/`.</ReadMore>
 
 ### Import a local stylesheet
 
@@ -187,7 +188,7 @@ There are two ways to resolve external global stylesheets: an ESM import for fil
 You may need to update your `astro.config` when importing from npm packages. See the ["import stylesheets from an npm package" section](#import-a-stylesheet-from-an-npm-package) below.
 :::
 
-You can import stylesheets in your Astro component frontmatter using ESM import syntax. CSS imports work like [any other ESM import in an Astro component](/en/core-concepts/astro-components/#the-component-script), which should be referenced as **relative to the component** and must be written at the **top** of your component script, with any other imports.
+You can import stylesheets in your Astro component frontmatter using ESM import syntax. CSS imports work like [any other ESM import in an Astro component](/en/basics/astro-components/#the-component-script), which should be referenced as **relative to the component** and must be written at the **top** of your component script, with any other imports.
 
 ```astro title="src/pages/index.astro" {4}
 ---
@@ -267,7 +268,7 @@ When conflicting CSS rules apply to the same element, browsers first use _specif
 
 If one rule is more _specific_ than another, no matter where the CSS rule appears, its value will take precedence:
 
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 <style>
   h1 { color: red }
   div > h1 {
@@ -282,7 +283,7 @@ If one rule is more _specific_ than another, no matter where the CSS rule appear
 ```
 
 If two rules have the same specificity, then the _order of appearance_ is evaluated, and the last rule's value will take precedence:
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 <style>
   h1 { color: purple }
   h1 { color: red }
@@ -304,12 +305,12 @@ Astro CSS rules are evaluated in this order of appearance:
 
 Using [scoped styles](#scoped-styles) does not increase the _specificity_ of your CSS, but they will always come last in the _order of appearance_. They will therefore take precedence over other styles of the same specificity. For example, if you import a stylesheet that conflicts with a scoped style, the scoped style's value will apply:
 
-```css title="make-it-purple.css"
+```css title="src/components/make-it-purple.css"
 h1 {
   color: purple;
 }
 ```
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 ---
 import "./make-it-purple.css"
 ---
@@ -325,12 +326,12 @@ import "./make-it-purple.css"
 
 If you make the imported style _more specific_, it will have higher precedence over the scoped style:
 
-```css title="make-it-purple.css"
+```css title="src/components/make-it-purple.css"
 div > h1 {
   color: purple;
 }
 ```
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 ---
 import "./make-it-purple.css"
 ---
@@ -348,17 +349,17 @@ import "./make-it-purple.css"
 
 When importing multiple stylesheets in an Astro component, the CSS rules are evaluated in the order that they are imported. A higher specificity will always determine which styles to show, no matter when the CSS is evaluated. But, when conflicting styles have the same specificity, the _last one imported_ wins:
 
-```css title="make-it-purple.css"
+```css title="src/components/make-it-purple.css"
 div > h1 {
   color: purple;
 }
 ```
-```css title="make-it-green.css"
+```css title="src/components/make-it-green.css"
 div > h1 {
   color: green;
 }
 ```
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 ---
 import "./make-it-green.css"
 import "./make-it-purple.css"
@@ -375,7 +376,7 @@ import "./make-it-purple.css"
 
 While `<style>` tags are scoped and only apply to the component that declares them, _imported_ CSS can "leak". Importing a component applies any CSS it imports, even if the component is never used:
 
-```astro title="PurpleComponent.astro"
+```astro title="src/components/PurpleComponent.astro"
 ---
 import "./make-it-purple.css"
 ---
@@ -383,7 +384,7 @@ import "./make-it-purple.css"
   <h1>I import purple CSS.</h1>
 </div>
 ```
-```astro title="MyComponent.astro"
+```astro title="src/components/MyComponent.astro"
 ---
 import "./make-it-green.css"
 import PurpleComponent from "./PurpleComponent.astro";
@@ -399,13 +400,13 @@ import PurpleComponent from "./PurpleComponent.astro";
 ```
 
 :::tip
-A common pattern in Astro is to import global CSS inside a [Layout component](/en/core-concepts/layouts/). Be sure to import the Layout component before other imports so that it has the lowest precedence.
+A common pattern in Astro is to import global CSS inside a [Layout component](/en/basics/layouts/). Be sure to import the Layout component before other imports so that it has the lowest precedence.
 :::
 
 ### Link Tags
 Style sheets loaded via [link tags](#load-a-static-stylesheet-via-link-tags) are evaluated in order, before any other styles in an Astro file. Therefore, these styles will have lower precedence than imported stylesheets and scoped styles:
 
-```astro title="index.astro"
+```astro title="src/pages/index.astro"
 ---
 import "../components/make-it-purple.css"
 ---
@@ -453,7 +454,7 @@ To use Tailwind in your project, install the official [Astro Tailwind integratio
   </Fragment>
 </PackageManagerTabs>
 
-📚 See the [Integrations Guide](/en/guides/integrations-guide/) for instructions on installing, importing and configuring Astro integrations.
+<ReadMore>See the [Integrations Guide](/en/guides/integrations-guide/) for instructions on installing, importing and configuring Astro integrations.</ReadMore>
 
 
 ## CSS Preprocessors
@@ -484,11 +485,32 @@ npm install less
 
 Use `<style lang="less">` in `.astro` files.
 
+### LightningCSS
+
+```shell
+npm install lightningcss
+```
+
+Update your `vite` configuration in `astro.config.mjs`:
+
+```js title="astro.config.mjs" ins={4-8}
+import { defineConfig } from 'astro/config'
+
+export default defineConfig({
+  vite: {
+    css: {
+      transformer: "lightningcss",
+    },
+  },
+})
+  
+```
+
 ### In framework components
 
 You can also use all of the above CSS preprocessors within JS frameworks as well! Be sure to follow the patterns each framework recommends:
 
-- **React** / **Preact**: `import Styles from './styles.module.scss'`;
+- **React** / **Preact**: `import Styles from './styles.module.scss';`
 - **Vue**: `<style lang="scss">`
 - **Svelte**: `<style lang="scss">`
 
@@ -530,7 +552,7 @@ Svelte in Astro also works exactly as expected: [Svelte Styling Docs][svelte-sty
 
 ## Markdown Styling
 
-Any Astro styling methods are available to a [Markdown layout component](/en/core-concepts/layouts/#markdownmdx-layouts), but different methods will have different styling effects on your page.
+Any Astro styling methods are available to a [Markdown layout component](/en/basics/layouts/#markdownmdx-layouts), but different methods will have different styling effects on your page.
 
 You can apply global styles to your Markdown content by adding [imported stylesheets](#external-styles) to the layout that wraps your page content. It is also possible to style your Markdown with [`<style is:global>` tags](#global-styles) in the layout component.  Note that any styles added are subject to [Astro's cascading order](#cascading-order), and you should check your rendered page carefully to ensure your styles are being applied as intended.
 
@@ -546,7 +568,7 @@ However, when you have several pages sharing styles, some shared chunks can beco
 
 You can configure the size at which stylesheets will be linked externally (in bytes) using the `assetsInlineLimit` vite build option. Note that this option affects script and image inlining as well.
 
-```js
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
@@ -560,7 +582,7 @@ export default defineConfig({
 
 If you would rather all project styles remain external, you can configure the `inlineStylesheets` build option.
 
-```js
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({

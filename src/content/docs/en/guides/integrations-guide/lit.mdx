@@ -105,7 +105,7 @@ import { LitElement, html } from 'lit';
 
 export class MyElement extends LitElement {
   render() {
-    return html` <p>Hello world! From my-element</p> `;
+    return html`<p>Hello world! From my-element</p>`;
   }
 }
 
@@ -125,6 +125,34 @@ import { MyElement } from '../components/my-element.js';
 :::note
 Lit requires browser globals such as `HTMLElement` and `customElements` to be present. For this reason the Lit renderer shims the server with these globals so Lit can run. You *might* run into libraries that work incorrectly because of this.
 :::
+
+### Experimental Decorators
+
+To use [experimental decorators in Lit](https://lit.dev/docs/components/decorators/), add the following to your `tsconfig.json` file:
+
+```json title="tsconfig.json" add={3}
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+  }
+}
+```
+
+This allows you to use experimental decorators such as `@customElement` and `@state` to register a custom element and define a state property in your Lit component:
+
+```ts title="src/components/my-element.ts"
+import { LitElement, html } from "lit";
+import { customElement, state } from "lit/decorators.js";
+
+@customElement("my-element")
+export class MyElement extends LitElement {
+    @state() name = "my-element";
+
+    override render() {
+        return html`<p>Hello world! From ${this.name}</p>`;
+    }
+}
+```
 
 ### Polyfills & Hydration
 
@@ -181,8 +209,10 @@ public-hoist-pattern[]=*lit*
 
 ### Limitations
 
-The Lit integration is powered by `@lit-labs/ssr` which has some limitations. See their [limitations documentation](https://www.npmjs.com/package/@lit-labs/ssr#user-content-notes-and-limitations) to learn more.
+- The Lit integration is powered by `@lit-labs/ssr` which has some limitations. See their [limitations documentation](https://www.npmjs.com/package/@lit-labs/ssr#notes-and-limitations) to learn more.
+
+- Astro does not support IntelliSense for Lit components.
 
 [astro-integration]: /en/guides/integrations-guide/
 
-[astro-ui-frameworks]: /en/core-concepts/framework-components/#using-framework-components
+[astro-ui-frameworks]: /en/guides/framework-components/#using-framework-components

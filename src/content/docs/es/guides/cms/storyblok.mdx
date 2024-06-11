@@ -6,9 +6,9 @@ service: Storyblok
 stub: false
 i18nReady: true
 ---
-import FileTree from '~/components/FileTree.astro'
+import { FileTree } from '@astrojs/starlight/components';
 import PackageManagerTabs from '~/components/tabs/PackageManagerTabs.astro'
-
+import { Steps } from '@astrojs/starlight/components';
 
 
 [Storyblok](https://www.storyblok.com/) es un headless CMS basado en componentes que te permite gestionar tu contenido utilizando componentes reutilizables llamados Bloks.
@@ -60,7 +60,7 @@ Para conectar Astro con tu espacio de Storyblok, instala la [integración oficia
   </Fragment>
   <Fragment slot="pnpm">
   ```shell
-  pnpm install @storyblok/astro vite
+  pnpm add @storyblok/astro vite
   ```
   </Fragment>
   <Fragment slot="yarn">
@@ -272,7 +272,7 @@ Para conectar los Bloks recién creados a los componentes de Astro, crea una nue
 ```astro title="src/storyblok/Page.astro"
 ---
 import { storyblokEditable } from '@storyblok/astro'
-import StoryblokComponent from '@storyblok/astro/components/StoryblokComponent.astro';
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 const { blok } = Astro.props
 ---
 
@@ -400,7 +400,7 @@ Para generar páginas para todas tus publicaciones de blog, crea una página `.a
 
 #### Generación de sitio estático
 
-If you are using Astro's default static site generation, you will use [dynamic routes](/es/core-concepts/routing/#rutas-dinámicas) and the `getStaticPaths` function to generate your project pages.
+If you are using Astro's default static site generation, you will use [dynamic routes](/es/guides/routing/#rutas-dinámicas) and the `getStaticPaths` function to generate your project pages.
 
 Crea un nuevo directorio `src/pages/blog/` y agrega un nuevo archivo llamado `[...slug].astro` con el siguiente código:
 
@@ -512,21 +512,25 @@ Si tu proyecto utiliza el modo estático predeterminado de Astro, deberás confi
 
 Para configurar un webhook en Netlify:
 
+<Steps>
 1. Ve al panel de administración de tu sitio en Netlify y haz clic en**Build & deploy**. 
 
 2. Bajo la pestaña **Continuous Deployment**, encuentra la sección de **Build hooks** y haz clic en **Add build hook**. 
 
 3. Proporciona un nombre para tu webhook y selecciona la rama en la que deseas activar la compilación. Haz clic en **Save** y copia la URL generada.
+</Steps>
 
 ##### Vercel
 
 Para configurar un webhook en Vercel:
 
+<Steps>
 1. Ve al panel de control de tu proyecto y haz clic en **Settings**. 
 
 2. Bajo la pestaña **Git**, encuentra la sección **Deploy Hooks**. 
 
 3. Proporciona un nombre para tu webhook y la rama en la que deseas activar la compilación. Haz clic en **Add** y copia la URL generada.
+</Steps>
 
 ##### Añadiendo un webhook a Storyblok
 
