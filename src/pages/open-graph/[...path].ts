@@ -77,7 +77,7 @@ export const { getStaticPaths, GET } = OGImageRoute({
 				},
 			},
 			fonts: [
-				brandFont,
+				// brandFont,
 
 				'./src/pages/open-graph/_fonts/inter/inter-400-normal.ttf',
 				'./src/pages/open-graph/_fonts/inter/inter-500-normal.ttf',
