@@ -45,18 +45,21 @@ export default defineConfig({
 								maxAgeSeconds: 30 * 24 * 60 * 60,
 							},
 							plugins: [
-                {
-                  cacheWillUpdate: async ({ response }) => {
-                    // Only cache valid responses
-                    if (response && response.status === 200) {
-                      return response;
-                    }
-                    return null;
-                  },
-                },
-              ],
+								{
+									cacheWillUpdate: async ({ response }) => {
+										// Only cache valid responses
+										if (response && response.status === 200) {
+											return response;
+										}
+										return null;
+									},
+								},
+							],
 						},
 					},
+				],
+				additionalManifestEntries: [
+					{ url: 'https://astro-docs-pwa.vercel.app/404/', revision: null }, 
 				],
 			},
 			experimental: {
