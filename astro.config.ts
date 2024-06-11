@@ -32,35 +32,8 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon.svg'],
 			workbox: {
-				navigateFallback: 'https://astro-docs-pwa.vercel.app/404/',
+				navigateFallback: '/',
 				globPatterns: ['**/*.{css,html,ico,js,mp4,png,svg,txt,webmanifest,webp,xml}'],
-				runtimeCaching: [
-					{
-						urlPattern: new RegExp('^https://astro-docs-pwa\\.vercel\\.app/.*'),
-						handler: 'StaleWhileRevalidate',
-						options: {
-							cacheName: 'astro-docs-cache',
-							expiration: {
-								maxEntries: 100,
-								maxAgeSeconds: 30 * 24 * 60 * 60,
-							},
-							plugins: [
-								{
-									cacheWillUpdate: async ({ response }) => {
-										// Only cache valid responses
-										if (response && response.status === 200) {
-											return response;
-										}
-										return null;
-									},
-								},
-							],
-						},
-					},
-				],
-				additionalManifestEntries: [
-					{ url: 'https://astro-docs-pwa.vercel.app/404/', revision: null }, 
-				],
 			},
 			experimental: {
 				directoryAndTrailingSlashHandler: true,

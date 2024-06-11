@@ -33,11 +33,5 @@
       "type": "image/png",
       "purpose": "maskable"
     }
-  ],
-  "urls": [
-    {
-      "url": "https://astro-docs-pwa.vercel.app/404/",
-      "revision": null
-    }
   ]
 }
