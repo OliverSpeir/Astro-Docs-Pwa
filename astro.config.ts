@@ -32,7 +32,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon.svg'],
 			workbox: {
-				navigateFallback: '/404.html',
+				navigateFallback: 'https://astro-docs-pwa.vercel.app/404.html',
 				globPatterns: ['**/*.{css,html,ico,js,mp4,png,svg,txt,webmanifest,webp,xml}'],
 				runtimeCaching: [
 					{
@@ -44,6 +44,17 @@ export default defineConfig({
 								maxEntries: 100,
 								maxAgeSeconds: 30 * 24 * 60 * 60,
 							},
+							plugins: [
+                {
+                  cacheWillUpdate: async ({ response }) => {
+                    // Only cache valid responses
+                    if (response && response.status === 200) {
+                      return response;
+                    }
+                    return null;
+                  },
+                },
+              ],
 						},
 					},
 				],
