@@ -2,11 +2,11 @@ import { OGImageRoute } from 'astro-og-canvas';
 import { allPages } from '~/content';
 import { rtlLanguages } from '~/i18n/languages';
 import { getLangFromSlug } from '~/util';
-import { fetchBrandFont } from './_fetchFont';
+// import { fetchBrandFont } from './_fetchFont';
 
 type OGImageOptions = Awaited<ReturnType<Parameters<typeof OGImageRoute>[0]['getImageOptions']>>;
 
-const brandFont = await fetchBrandFont();
+// const brandFont = await fetchBrandFont();
 
 /** Paths for all of our Markdown content we want to generate OG images for. */
 const paths = process.env.SKIP_OG ? [] : allPages;
