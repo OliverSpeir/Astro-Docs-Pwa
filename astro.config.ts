@@ -36,7 +36,7 @@ export default defineConfig({
 				globPatterns: ['**/*.{css,html,ico,js,mp4,png,svg,txt,webmanifest,webp,xml}'],
 				runtimeCaching: [
 					{
-						urlPattern: /^https:\/\/astro-docs-pwa\.vercel\.app\/.*/,
+						urlPattern: new RegExp('^https://astro-docs-pwa\\.vercel\\.app/.*'),
 						handler: 'StaleWhileRevalidate',
 						options: {
 							cacheName: 'astro-docs-cache',
