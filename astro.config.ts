@@ -32,7 +32,7 @@ export default defineConfig({
 			registerType: 'autoUpdate',
 			includeAssets: ['favicon.svg'],
 			workbox: {
-				navigateFallback: 'https://astro-docs-pwa.vercel.app/404.html',
+				navigateFallback: 'https://astro-docs-pwa.vercel.app/404/',
 				globPatterns: ['**/*.{css,html,ico,js,mp4,png,svg,txt,webmanifest,webp,xml}'],
 				runtimeCaching: [
 					{
