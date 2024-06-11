@@ -3,10 +3,9 @@ import { defineConfig, sharpImageService } from 'astro/config';
 import { makeLocalesConfig } from './config/locales';
 import { makeSidebar } from './config/sidebar';
 
-import AstroPWA from "@vite-pwa/astro";
-import type { ManifestOptions } from "vite-plugin-pwa";
-import manifest from "./webmanifest.json";
-
+import AstroPWA from '@vite-pwa/astro';
+import type { ManifestOptions } from 'vite-plugin-pwa';
+import manifest from './webmanifest.json';
 
 import rehypeSlug from 'rehype-slug';
 import remarkSmartypants from 'remark-smartypants';
@@ -29,17 +28,31 @@ export default defineConfig({
 	site,
 	integrations: [
 		AstroPWA({
-			mode: "production",
-			registerType: "autoUpdate",
-			includeAssets: ["favicon.svg"],
+			mode: 'production',
+			registerType: 'autoUpdate',
+			includeAssets: ['favicon.svg'],
 			workbox: {
-			  navigateFallback: "/404",
+				navigateFallback: '/404.html',
+				globPatterns: ['**/*.{css,html,ico,js,mp4,png,svg,txt,webmanifest,webp,xml}'],
+				runtimeCaching: [
+					{
+						urlPattern: /^https:\/\/astro-docs-pwa\.vercel\.app\/.*/,
+						handler: 'StaleWhileRevalidate',
+						options: {
+							cacheName: 'astro-docs-cache',
+							expiration: {
+								maxEntries: 100,
+								maxAgeSeconds: 30 * 24 * 60 * 60,
+							},
+						},
+					},
+				],
 			},
 			experimental: {
-			  directoryAndTrailingSlashHandler: true,
+				directoryAndTrailingSlashHandler: true,
 			},
 			manifest: manifest as Partial<ManifestOptions>,
-		  }),
+		}),
 		starlight({
 			title: 'Docs',
 			customCss: ['./src/styles/custom.css'],
@@ -106,7 +119,7 @@ export default defineConfig({
 		service: sharpImageService(),
 	},
 	experimental: {
-		contentCollectionCache: false,
+		contentCollectionCache: true,
 		directRenderScript: true,
 	},
 });
