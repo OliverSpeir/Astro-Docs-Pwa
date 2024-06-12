@@ -107,6 +107,6 @@ export default defineConfig({
 	},
 	experimental: {
 		contentCollectionCache: false,
-		directRenderScript: true,
+		directRenderScript: false,
 	},
 });
